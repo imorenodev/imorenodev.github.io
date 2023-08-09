@@ -20,11 +20,11 @@ button {
   font-size: 17px;
 }
 
-h3 {
+h5 {
   background-color: rgba(3, 218, 197, 0.7);
   border-bottom: 5px solid #ecf0f1;
   margin-bottom: 0;
-  margin-top: 20px;
+  margin-top: 0px;
   padding: 10px;
   text-align: center;
 }
@@ -32,7 +32,7 @@ h3 {
 h6 {
   background-color: rgba(3, 218, 197, 0.7);
   border-bottom: 5px solid #ecf0f1;
-  padding: 10px;
+  padding: 5px;
   text-align: center;
 }
 
@@ -95,7 +95,7 @@ ul {
 
 .zone-container.ranks>div {
   background-color: rgba(255, 136, 0, 1);
-  margin: 5px;
+  margin-top: 1rem!important;
   padding: 10px;
   transition: opacity 0.4s ease-in-out 0s;
   cursor: grab;
@@ -121,7 +121,7 @@ ul {
 }
 
 #player-column {
-  min-height: 445px;
+  min-height: 385px;
 }
 
 .player {
