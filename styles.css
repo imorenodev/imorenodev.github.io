@@ -1,9 +1,14 @@
+html {
+  overscroll-behavior: none;
+}
+
 html,
 body {
   box-sizing: border-box;
   background-color: rgba(51, 45, 45, 1);
   margin: 0 auto;
   max-width: 760px;
+  overflow: hidden;
 }
 
 *,
