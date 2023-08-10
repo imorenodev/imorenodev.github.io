@@ -12,8 +12,10 @@ var drake = dragula([
 
 // Handle drop event
 drake.on("drop", function(el, target, source, sibling) {
-  if (target.id === "player-column") {
+  // no limit on number of players in player-column
+  if (target.id === "player-column") { 
     target.appendChild(el);
+    checkIfAllThreeZonesFilled();
     return;
   }
 
@@ -26,7 +28,23 @@ drake.on("drop", function(el, target, source, sibling) {
     }
   }
   target.appendChild(el);
+
+  checkIfAllThreeZonesFilled();
 });
+
+function checkIfAllThreeZonesFilled() {
+  var rankColumns = [rankColumn1, rankColumn2, rankColumn3];
+
+  $('#rank-column-submit').hide();
+
+  for (let column in rankColumns) {
+    let player = $(rankColumns[column]).find(".player");
+    if (player.length <= 0) {
+      return;
+    }
+  }
+  $('#rank-column-submit').show();
+}
 
 // Add event listener for the reset button
 $("#rank-column-restart").on("click", function() {
