@@ -29,7 +29,7 @@ drake.on("drop", function(el, target, source, sibling) {
 });
 
 // Add event listener for the reset button
-$("#rank-column-reset").on("click", function() {
+$("#rank-column-restart").on("click", function() {
   var rankColumns = [rankColumn1, rankColumn2, rankColumn3];
 
   rankColumns.forEach(function(column) {
@@ -86,6 +86,7 @@ function updateCountdown() {
     countdownTimer = setTimeout(updateCountdown, 1000); // Update every second
   } else {
     countdownElement.text("Time's up!");
+    $('#rank-column-restart').toggle();
   }
 }
 updateCountdown(); // Start the countdown when the page loads

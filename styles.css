@@ -26,12 +26,7 @@ button {
 }
 
 .navbar {
-  padding: 0.5rem 1rem 0;
   background-color: rgba(3, 218, 197, 0.7);
-}
-
-.navbar-brand, .nav-link {
-  font-size: 1rem;
 }
 
 h5 {
@@ -48,6 +43,7 @@ h6 {
   border-bottom: 5px solid #ecf0f1;
   padding: 5px;
   text-align: center;
+  font-weight: bold;
 }
 
 a {
