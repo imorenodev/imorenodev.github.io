@@ -193,7 +193,7 @@ async function processData() {
     const csvData = await fetchCSVFile();
     if (csvData) {
         // Process the CSV data
-        const parsedCsv = parseCsv(csv);
+        const parsedCsv = parseCsv(csvData);
         const result = transformToDesiredFormat(parsedCsv);
         console.log(result);
         initPlayers(result.teams);
