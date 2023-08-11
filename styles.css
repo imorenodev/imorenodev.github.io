@@ -5,7 +5,7 @@ html {
 html,
 body {
   box-sizing: border-box;
-  background-color: rgba(51, 45, 45, 1);
+  background-color: rgba(148,89,246, 1);
   margin: 0 auto;
   max-width: 760px;
   overflow: hidden;
@@ -76,7 +76,7 @@ ul {
 }
 
 .zone-container {
-  background-color: rgba(51, 45, 45, 1);
+  background-color: rgba(148,89,246, 1);
   border: 2px dotted rgba(3, 218, 197, 0.7);
   transition: all 0.5s;
   min-height: 75px;
@@ -88,7 +88,7 @@ ul {
 }
 
 .zone-header {
-  background-color: rgba(51, 45, 45, 1);
+  background-color: rgba(148,89,246, 1);
 }
 
 .zone-container.players>div {
