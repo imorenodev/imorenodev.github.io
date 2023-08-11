@@ -106,12 +106,20 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .zone-container.ranks>div {
   background-color: rgba(255, 136, 0, 1);
   transition: opacity 0.4s ease-in-out 0s;
   cursor: grab;
+}
+
+.zone-container.ranks>img {
+  max-width: 25%;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .gu-mirror {
@@ -124,12 +132,12 @@ ul {
 
 #rank-column-1,
 #rank-column-2 {
-  background-image: url(https://i.ibb.co/LnjGtmp/dolphins.png);
+  background-image: url(./img/bg/mia-bg.png);
   background-size: cover;
 }
 
 #rank-column-3 {
-  background-image: url(https://i.ibb.co/HP64bCr/eagles.png);
+  background-image: url(./img/bg/phi-bg.png);
   background-size: cover;
 }
 
