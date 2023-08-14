@@ -4,11 +4,17 @@ var rankColumn2 = document.getElementById("rank-column-2");
 var rankColumn3 = document.getElementById("rank-column-3");
 
 var drake = dragula([
-  playerColumn,
-  rankColumn1,
-  rankColumn2,
-  rankColumn3
-]);
+    playerColumn,
+    rankColumn1,
+    rankColumn2,
+    rankColumn3
+  ],   
+  {
+    invalid: function (el, handle) {
+      return el.className != "player";
+    }
+  }
+);
 
 // Handle drop event
 drake.on("drop", function(el, target, source, sibling) {
