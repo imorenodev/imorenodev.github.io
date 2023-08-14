@@ -3,40 +3,57 @@ var rankColumn1 = document.getElementById("rank-column-1");
 var rankColumn2 = document.getElementById("rank-column-2");
 var rankColumn3 = document.getElementById("rank-column-3");
 
-var drake = dragula([
-    playerColumn,
-    rankColumn1,
-    rankColumn2,
-    rankColumn3
-  ],   
-  {
-    invalid: function (el, handle) {
-      return el.className != "player";
-    }
-  }
-);
+var countdownElement = $("#countdown");
 
-// Handle drop event
-drake.on("drop", function(el, target, source, sibling) {
-  // no limit on number of players in player-column
-  if (target.id === "player-column") { 
+var drake = null;
+
+function initDragContainers() {
+
+  if (drake) {
+    drake.destroy();
+  }
+
+  drake = dragula([
+      playerColumn,
+      rankColumn1,
+      rankColumn2,
+      rankColumn3
+    ],   
+    {
+      invalid: function (el, handle) {
+        return el.className != "player";
+      }
+    }
+  );
+
+  // Handle drop event
+  drake.on("drop", function(el, target, source, sibling) {
+    // no limit on number of players in player-column
+    if (target.id === "player-column") { 
+      target.appendChild(el);
+      checkIfAllThreeZonesFilled();
+      return;
+    }
+
+    // Check if the target column already has an item
+    var targetItems = target.getElementsByClassName("player");
+
+    for (let item of targetItems) {
+      if (!item.classList.contains("gu-transit")) {
+        source.appendChild(item);
+      }
+    }
     target.appendChild(el);
+
     checkIfAllThreeZonesFilled();
-    return;
+  });
+}
+
+function disableDragAndDrop() {
+  if (drake) {
+    drake.destroy();
   }
-
-  // Check if the target column already has an item
-  var targetItems = target.getElementsByClassName("player");
-
-  for (let item of targetItems) {
-    if (!item.classList.contains("gu-transit")) {
-      source.appendChild(item);
-    }
-  }
-  target.appendChild(el);
-
-  checkIfAllThreeZonesFilled();
-});
+}
 
 function checkIfAllThreeZonesFilled() {
   var rankColumns = [rankColumn1, rankColumn2, rankColumn3];
@@ -65,8 +82,6 @@ $("#rank-column-restart").on("click", function() {
 });
 
 
-var countdownElement = $("#countdown");
-
 $("#rank-column-submit").click(function() {
   var success = true;
   // Loop through each rank column
@@ -87,6 +102,7 @@ $("#rank-column-submit").click(function() {
 
   // Display the appropriate message
   if (success) {
+    disableDragAndDrop();
     clearTimeout(countdownTimer); // Stop the countdown
     alert("Success!");
   } else {
@@ -112,14 +128,17 @@ function updateCountdown() {
     remainingTime--;
     countdownTimer = setTimeout(updateCountdown, 1000); // Update every second
   } else {
+    disableDragAndDrop();
     countdownElement.text("Time's up!");
     $('#rank-column-restart').show();
     $('#rank-column-submit').hide();
   }
 }
 updateCountdown(); // Start the countdown when the page loads
+initDragContainers();
 
 function resetTimer() {
+  initDragContainers();
   clearTimeout(countdownTimer);
   remainingTime = initialMinutes * 60;
   updateCountdown();
