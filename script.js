@@ -210,7 +210,7 @@ function initPlayers(teams) {
   const wideReceivers = selectedTeam["Wide Receivers"].slice(0, 3);
 
   const remainingWideReceivers = [];
-  while (remainingWideReceivers.length < 6) {
+  while (remainingWideReceivers.length < 3) {
     const randomTeamName = teamNames[Math.floor(Math.random() * teamNames.length)];
     const randomTeamWideReceivers = teams[randomTeamName]["Wide Receivers"];
 
@@ -220,9 +220,23 @@ function initPlayers(teams) {
     }
   }
 
+  // Combine both arrays
+  const allPlayers = [...wideReceivers, ...remainingWideReceivers];
+
+  // Function to shuffle an array using Fisher-Yates algorithm
+  function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+  }
+
+  // Shuffle the combined array
+  shuffleArray(allPlayers);
+
   const playerColumn = document.getElementById("player-column");
 
-  [...wideReceivers, ...remainingWideReceivers].forEach((player, index) => {
+  allPlayers.forEach((player, index) => {
     const div = document.createElement("div");
     div.classList.add("player");
     div.dataset.team = index < 3 ? randomTeam : teamNames[Math.floor(Math.random() * teamNames.length)];

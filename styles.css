@@ -148,4 +148,10 @@ ul {
 .player {
   font-size: small;
   padding: 5px;
+  min-height: 50px;
+  max-width: 145px;
+
+  /* wrap text to new line */
+  word-wrap: break-word;
+  display: block;
 }
