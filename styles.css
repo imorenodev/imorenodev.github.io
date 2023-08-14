@@ -108,6 +108,8 @@ ul {
   background-color: rgba(255, 136, 0, 1);
   transition: opacity 0.4s ease-in-out 0s;
   cursor: grab;
+  max-width: 105px;
+  max-height: 60px;
 }
 
 .zone-container.ranks>img {
@@ -133,6 +135,11 @@ ul {
 
 #rank-column-3 {
   background-image: url(./img/bg/phi-bg.png);
+  background-size: cover;
+}
+
+#rank-column-4 {
+  background-image: url(./img/bg/den-bg.png);
   background-size: cover;
 }
 

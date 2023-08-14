@@ -1,7 +1,10 @@
 var playerColumn = document.getElementById("player-column");
-var rankColumn1 = document.getElementById("rank-column-1");
-var rankColumn2 = document.getElementById("rank-column-2");
-var rankColumn3 = document.getElementById("rank-column-3");
+var rankColumns = [
+  document.getElementById("rank-column-1"),
+  document.getElementById("rank-column-2"),
+  document.getElementById("rank-column-3"),
+  document.getElementById("rank-column-4")
+];
 
 var countdownElement = $("#countdown");
 
@@ -15,9 +18,7 @@ function initDragContainers() {
 
   drake = dragula([
       playerColumn,
-      rankColumn1,
-      rankColumn2,
-      rankColumn3
+      ...rankColumns,
     ],   
     {
       invalid: function (el, handle) {
@@ -56,8 +57,6 @@ function disableDragAndDrop() {
 }
 
 function checkIfAllThreeZonesFilled() {
-  var rankColumns = [rankColumn1, rankColumn2, rankColumn3];
-
   $('#rank-column-submit').hide();
 
   for (let column in rankColumns) {
@@ -71,8 +70,6 @@ function checkIfAllThreeZonesFilled() {
 
 // Add event listener for the reset button
 $("#rank-column-restart").on("click", function() {
-  var rankColumns = [rankColumn1, rankColumn2, rankColumn3];
-
   rankColumns.forEach(function(column) {
     $(column).find(".player").appendTo(playerColumn);
   });
@@ -84,19 +81,17 @@ $("#rank-column-restart").on("click", function() {
 
 $("#rank-column-submit").click(function() {
   var success = true;
-  // Loop through each rank column
-  for (var i = 1; i <= 3; i++) {
-    var column = $("#rank-column-" + i);
-    var team = column.attr("data-team");
-    var rank = column.attr("data-rank");
+  for (let column in rankColumns) {
+    var team = $(column).attr("data-team");
+    var rank = $(column).attr("data-rank");
 
     // Find the matching player in the current rank column
-    var matchingPlayer = column.find(".player[data-team='" + team + "'][data-rank='" + rank + "']");
+    var matchingPlayer = $(column).find(".player[data-team='" + team + "'][data-rank='" + rank + "']");
 
     // Check if a matching player exists in the current rank column
     if (matchingPlayer.length === 0) {
       success = false;
-      break; // Exit the loop early if a match is missing
+      break;
     }
   }
 
@@ -235,7 +230,7 @@ function initPlayers(teams) {
   const wideReceivers = selectedTeam["Wide Receivers"].slice(0, 3);
 
   const remainingWideReceivers = [];
-  while (remainingWideReceivers.length < 3) {
+  while (remainingWideReceivers.length < 4) {
     const randomTeamName = teamNames[Math.floor(Math.random() * teamNames.length)];
     const randomTeamWideReceivers = teams[randomTeamName]["Wide Receivers"];
 
