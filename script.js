@@ -1,3 +1,10 @@
+import { images } from './assets.js';
+
+// Now you can use the images array
+console.log(images);
+
+
+
 var playerColumn = document.getElementById("player-column");
 var rankColumns = [
   document.getElementById("rank-column-1"),
