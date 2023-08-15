@@ -12,9 +12,7 @@ var drake = null;
 
 function initDragContainers() {
 
-  if (drake) {
-    drake.destroy();
-  }
+  disableDragAndDrop();
 
   drake = dragula([
       playerColumn,
@@ -52,6 +50,7 @@ function initDragContainers() {
 
 function disableDragAndDrop() {
   if (drake) {
+    drake.cancel(true);
     drake.destroy();
   }
 }
