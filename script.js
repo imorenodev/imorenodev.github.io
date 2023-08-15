@@ -257,12 +257,24 @@ function initPlayers(teams) {
   const playerColumn = document.getElementById("player-column");
 
   allPlayers.forEach((player, index) => {
-    const div = document.createElement("div");
-    div.classList.add("player");
-    div.dataset.team = index < 3 ? randomTeam : teamNames[Math.floor(Math.random() * teamNames.length)];
-    div.dataset.rank = index + 1;
-    div.textContent = `#${index + 1} ${player}`;
-    playerColumn.appendChild(div);
+    // Create the player div
+    const $playerDiv = $("<div>").addClass("player");
+    
+    // Assign dataset attributes
+    const teamValue = index < 3 ? randomTeam : teamNames[Math.floor(Math.random() * teamNames.length)];
+    $playerDiv.attr("data-team", teamValue);
+    $playerDiv.attr("data-rank", index + 1);
+
+    // Create and append rank div
+    const $rankDiv = $("<div>").addClass("rank").text(`#${index + 1}`);
+    $playerDiv.append($rankDiv);
+    
+    // Create and append name div
+    const $nameDiv = $("<div>").addClass("name").text(player);
+    $playerDiv.append($nameDiv);
+
+    // Append the player div to the playerColumn
+    $("#player-column").append($playerDiv);
   });
 }
 
