@@ -108,7 +108,7 @@ ul {
   background-color: rgba(255, 136, 0, 1);
   transition: opacity 0.4s ease-in-out 0s;
   cursor: grab;
-  max-width: 105px;
+  width: 100%;
   max-height: 60px;
 }
 
@@ -151,7 +151,7 @@ ul {
   font-size: small;
   padding: 5px;
   min-height: 50px;
-  max-width: 145px;
+  width: 100%;
 
   /* wrap text to new line */
   word-wrap: break-word;
