@@ -1,9 +1,4 @@
-import { images } from './assets.js';
-
-// Now you can use the images array
-console.log(images);
-
-
+import { getTeams } from './teams.js';
 
 var playerColumn = document.getElementById("player-column");
 var rankColumns = [
@@ -147,136 +142,72 @@ function resetTimer() {
 
 
 
-// https://tools.thehuddle.com/nfl-depth-charts
-// paste into excel
-// export as csv
-// run through this logic
-
-function parseCsv(csv) {
-    const lines = csv.trim().split("\n");
-    const headers = lines[0].split(",");
-    
-    const data = [];
-    let currentTeam = "";
-  
-    for (let i = 1; i < lines.length; i++) {
-        const currentLine = lines[i].split(",");
-        const obj = {};
-        
-        // If the current line has a team, update the current team
-        if (currentLine[0]) {
-            currentTeam = currentLine[0];
-        }
-        
-        obj[headers[0]] = currentTeam;
-        for (let j = 1; j < headers.length; j++) {
-            obj[headers[j]] = currentLine[j];
-        }
-        data.push(obj);
+const positions = {
+  WR: { 
+      "name": "Wide Receivers",
+      "depthLevel": 3 
+    },
+  QB: { 
+      "name": "QuarterBacks",
+      "depthLevel": 2 
+    },
+  RB: {
+      "name": "Running Backs",
+      "depthLevel": 2
+    },
+  TE: {
+      "name": "Tight Ends",
+      "depthLevel": 2
+    },
+  K: { 
+      "name": "Kickers",
+      "depthLevel": 2
     }
-    
-    return data;
-}
-
-function transformToDesiredFormat(csvData) {
-    const result = { teams: {} };
-    
-    csvData.forEach(row => {
-        if (!result.teams[row.Team]) {
-            result.teams[row.Team] = {
-                "Quarterbacks": [],
-                "Running Backs": [],
-                "Wide Receivers": [],
-                "Tight Ends": [],
-                "Kickers": []
-            };
-        }
-
-        for (let position in result.teams[row.Team]) {
-            if (row[position] && row[position].trim()) {
-                result.teams[row.Team][position].push(row[position].trim());
-            }
-        }
-    });
-
-    return result;
-}
-
-// Function to fetch the CSV data from the external file
-async function fetchCSVFile() {
-    try {
-        const response = await fetch('data.csv'); // Change the filename if necessary
-        const csvData = await response.text();
-        return csvData;
-    } catch (error) {
-        console.error('Error fetching CSV file:', error);
-        return null;
-    }
-}
-
-// Example usage
-async function processData() {
-    const csvData = await fetchCSVFile();
-    if (csvData) {
-        // Process the CSV data
-        const parsedCsv = parseCsv(csvData);
-        const result = transformToDesiredFormat(parsedCsv);
-        console.log(result);
-        initPlayers(result.teams);
-    }
-}
+};
+let selectedPositions = [positions.WR];
+let numberOfPLayers = 7;
 
 // Call the function to start fetching and processing the CSV data
-processData();
+getTeams(initPlayers);
 
 function initPlayers(teams) {
   const teamNames = Object.keys(teams);
-  const randomTeam = teamNames[Math.floor(Math.random() * teamNames.length)];
-  const selectedTeam = teams[randomTeam];
-  const wideReceivers = selectedTeam["Wide Receivers"].slice(0, 3);
 
-  const remainingWideReceivers = [];
-  while (remainingWideReceivers.length < 4) {
-    const randomTeamName = teamNames[Math.floor(Math.random() * teamNames.length)];
-    const randomTeamWideReceivers = teams[randomTeamName]["Wide Receivers"];
+  const players = [];
 
-    if (randomTeamWideReceivers.length > 0) {
-      const randomWideReceiver = randomTeamWideReceivers[Math.floor(Math.random() * randomTeamWideReceivers.length)];
-      remainingWideReceivers.push(randomWideReceiver);
-    }
+  // choose 7 random players 
+  for (let i = 0; i < numberOfPLayers; i++) {
+    // select a position from the list of possible positions
+    const selectedPosition = selectedPositions[Math.floor(Math.random() * selectedPositions.length)];
+    // select a random team
+    const selectedTeamIndex = Math.floor(Math.random() * teamNames.length);
+    const selectedTeamName = teamNames[selectedTeamIndex];
+    const selectedTeam = teams[selectedTeamName];
+    // select a random player for the team and position
+    const selectedPlayerIndex = Math.floor(Math.random() * selectedPosition.depthLevel);
+    const selectedPlayer = selectedTeam[selectedPosition.name][selectedPlayerIndex];
+    players.push({
+      "teamName": selectedTeamName,
+      "name": selectedPlayer,
+      "position": selectedPosition,
+      "depthRank": selectedPlayerIndex
+    })
   }
 
-  // Combine both arrays
-  const allPlayers = [...wideReceivers, ...remainingWideReceivers];
-
-  // Function to shuffle an array using Fisher-Yates algorithm
-  function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-      }
-  }
-
-  // Shuffle the combined array
-  shuffleArray(allPlayers);
-
-  const playerColumn = document.getElementById("player-column");
-
-  allPlayers.forEach((player, index) => {
+  players.forEach((player, index) => {
     // Create the player div
     const $playerDiv = $("<div>").addClass("player");
     
     // Assign dataset attributes
-    const teamValue = index < 3 ? randomTeam : teamNames[Math.floor(Math.random() * teamNames.length)];
-    $playerDiv.attr("data-team", teamValue);
-    $playerDiv.attr("data-rank", index + 1);
+    $playerDiv.attr("data-team", player.teamName);
+    $playerDiv.attr("data-rank", player.depthRank);
 
     // Create and append rank div
-    const $rankDiv = $("<div>").addClass("rank").text(`#${index + 1}`);
-    $playerDiv.append($rankDiv);
+    //const $rankDiv = $("<div>").addClass("rank").text(`#${index + 1}`);
+    //$playerDiv.append($rankDiv);
     
     // Create and append name div
-    const $nameDiv = $("<div>").addClass("name").text(player);
+    const $nameDiv = $("<div>").addClass("name").text(player.name);
     $playerDiv.append($nameDiv);
 
     // Append the player div to the playerColumn

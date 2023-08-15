@@ -164,28 +164,15 @@ ul {
   justify-content: space-between;
 }
 
-.rank {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  flex: 0.2;
-
-  font-weight: bold;
-  border-radius: 4px 0 0 4px;
-  background-color: rgb(64 80 97 / 85%);
-}
-
 .name {
   display: flex;
-  padding-left: 10px;
   align-items: center; /* Center vertically */
 
   /* wrap text to new line */
   word-wrap: break-word;
   word-break: break-all;
-  display: flex;
-  justify-content: space-between;
-  flex: 0.8;
+  justify-content: center;
+  flex: 1;
 
   font-weight: bold;
   border-radius: 0 4px 4px 0;

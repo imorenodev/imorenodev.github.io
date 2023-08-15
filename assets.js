@@ -55,9 +55,9 @@ export const images = {
         "imgBgUrl": "./img/bg/ind-bg.png",
         "imgLogoUrl": "./img/logo/ind.svg",
     },
-    "JAX": {
-        "imgBgUrl": "./img/bg/jax-bg.png",
-        "imgLogoUrl": "./img/logo/jax.svg",
+    "JAC": {
+        "imgBgUrl": "./img/bg/jac-bg.png",
+        "imgLogoUrl": "./img/logo/jac.svg",
     },
     "KC": {
         "imgBgUrl": "./img/bg/kc-bg.png",
@@ -71,9 +71,9 @@ export const images = {
         "imgBgUrl": "./img/bg/lar-bg.png",
         "imgLogoUrl": "./img/logo/la.svg",
     },
-    "LV": {
-        "imgBgUrl": "./img/bg/lv-bg.png",
-        "imgLogoUrl": "./img/logo/lv.svg",
+    "LVR": {
+        "imgBgUrl": "./img/bg/lvr-bg.png",
+        "imgLogoUrl": "./img/logo/lvr.svg",
     },
     "MIA": {
         "imgBgUrl": "./img/bg/mia-bg.png",
