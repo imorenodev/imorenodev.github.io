@@ -221,7 +221,7 @@ function initPlayers(teams) {
     const selectedTeam = teams[selectedTeamName];
     // select a random player for the team and position
     const selectedPlayerIndex = Math.floor(Math.random() * selectedPosition.depthLevel);
-    const selectedPlayer = selectedTeam[selectedPosition.name][selectedPlayerIndex];
+    const selectedPlayer = selectedTeam[selectedPosition.name][selectedPlayerIndex].replace(/\s\((N|R|PUP|SUS)\)$/, "");
     const depthRank = selectedPlayerIndex + 1;
     players.push({
       "teamName": selectedTeamName,
