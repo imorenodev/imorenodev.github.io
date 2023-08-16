@@ -15,6 +15,12 @@ function initRankColumns() {
   return rankColumns;
 }
 
+function resetColumns() {
+  $('#player-column').empty();
+  $('#rank-column').empty();
+  rankColumns = [];
+}
+
 var countdownElement = $("#countdown");
 
 var drake = null;
@@ -78,12 +84,9 @@ function checkIfAllThreeZonesFilled() {
 
 // Add event listener for the reset button
 $("#rank-column-restart").on("click", function() {
-  rankColumns.forEach(function(column) {
-    $(column).find(".player").appendTo(playerColumn);
-  });
-
+  resetColumns();
   $('#rank-column-restart').hide();
-  resetTimer();
+  startRound();
 });
 
 
@@ -108,8 +111,10 @@ $("#rank-column-submit").click(function() {
     disableDragAndDrop();
     clearTimeout(countdownTimer); // Stop the countdown
     alert("Success!");
+    resetColumns();
+    startRound();
   } else {
-    alert("Missing matching players in rank columns.");
+    alert("WRONG. Try Again.");
   }
 });
 
@@ -137,10 +142,8 @@ function updateCountdown() {
     $('#rank-column-submit').hide();
   }
 }
-updateCountdown(); // Start the countdown when the page loads
 
 function resetTimer() {
-  initDragContainers();
   clearTimeout(countdownTimer);
   remainingTime = initialMinutes * 60;
   updateCountdown();
@@ -179,7 +182,9 @@ let selectedPositions = [positions.WR];
 let numberOfPLayers = 7;
 
 // Call the function to start fetching and processing the CSV data
-getTeams(initPlayers);
+function startRound() {
+  getTeams(initPlayers);
+}
 
 function initPlayers(teams) {
   const teamNames = Object.keys(teams);
@@ -259,4 +264,8 @@ function initPlayers(teams) {
 
   initRankColumns();
   initDragContainers();
+  resetTimer();
+  updateCountdown(); // Start the countdown when the page loads
 }
+
+startRound();

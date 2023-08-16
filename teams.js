@@ -6,14 +6,19 @@ import { images } from './assets.js';
 // run through this logic
 
 // Example usage
+var teams;
 export async function getTeams(callback) {
-    const csvData = await fetchCSVFile();
-    if (csvData) {
-        // Process the CSV data
-        const parsedCsv = parseCsv(csvData);
-        const result = transformToDesiredFormat(parsedCsv);
-        console.log(result);
-        callback(result.teams);
+    if (teams) {
+        callback(teams);
+    } else {
+        const csvData = await fetchCSVFile();
+        if (csvData) {
+            // Process the CSV data
+            const parsedCsv = parseCsv(csvData);
+            const result = transformToDesiredFormat(parsedCsv);
+            console.log(result);
+            callback(result.teams);
+        }
     }
 }
 
