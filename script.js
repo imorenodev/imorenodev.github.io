@@ -85,6 +85,7 @@ function checkIfAllThreeZonesFilled() {
 // Add event listener for the reset button
 $("#rank-column-restart").on("click", function() {
   resetColumns();
+  chosenPlayers = {};
   $('#rank-column-restart').hide();
   startRound();
 });
@@ -205,6 +206,8 @@ function startRound() {
   getTeams(initPlayers);
 }
 
+let chosenPlayers = {};
+
 function initPlayers(teams) {
   const teamNames = Object.keys(teams);
 
@@ -213,16 +216,25 @@ function initPlayers(teams) {
 
   // choose 7 random players 
   for (let i = 0; i < numberOfPLayers; i++) {
-    // select a position from the list of possible positions
-    const selectedPosition = selectedPositions[Math.floor(Math.random() * selectedPositions.length)];
-    // select a random team
-    const selectedTeamIndex = Math.floor(Math.random() * teamNames.length);
-    const selectedTeamName = teamNames[selectedTeamIndex];
-    const selectedTeam = teams[selectedTeamName];
-    // select a random player for the team and position
-    const selectedPlayerIndex = Math.floor(Math.random() * selectedPosition.depthLevel);
-    const selectedPlayer = selectedTeam[selectedPosition.name][selectedPlayerIndex].replace(/\s\((N|R|PUP|SUS)\)$/, "");
-    const depthRank = selectedPlayerIndex + 1;
+    let selectedPosition, selectedTeamIndex, selectedTeamName, selectedTeam, selectedPlayerIndex, selectedPlayer, depthRank;
+
+    do {
+      // select a position from the list of possible positions
+      selectedPosition = selectedPositions[Math.floor(Math.random() * selectedPositions.length)];
+
+      // select a random team
+      selectedTeamIndex = Math.floor(Math.random() * teamNames.length);
+      selectedTeamName = teamNames[selectedTeamIndex];
+      selectedTeam = teams[selectedTeamName];
+
+      // select a random player for the team and position
+      selectedPlayerIndex = Math.floor(Math.random() * selectedPosition.depthLevel);
+      selectedPlayer = selectedTeam[selectedPosition.name][selectedPlayerIndex].replace(/\s\((N|R|PUP|SUS)\)$/, "");
+      depthRank = selectedPlayerIndex + 1;
+    } while (chosenPlayers[`${selectedTeamIndex}-${selectedPosition.name}-${selectedPlayerIndex}`]); // Check if the combination exists
+
+    // Add the combination to the cache
+    chosenPlayers[`${selectedTeamIndex}-${selectedPosition.name}-${selectedPlayerIndex}`] = true;
     players.push({
       "teamName": selectedTeamName,
       "name": selectedPlayer,
