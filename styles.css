@@ -182,3 +182,14 @@ ul {
 div.rank, div.name {
     pointer-events: none;
 }
+
+.small-logo {
+  height: 30px;
+  width: 30px;
+}
+
+.popover {
+    background-color: transparent;
+    border: none; /* Optional: If you also want to remove the border */
+    box-shadow: none; /* Optional: If you also want to remove the shadow */
+}

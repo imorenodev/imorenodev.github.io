@@ -141,6 +141,7 @@ function updateCountdown() {
     countdownElement.text("Time's up!");
     $('#rank-column-restart').show();
     $('#rank-column-submit').hide();
+    enableTooltips();
   }
 }
 
@@ -149,7 +150,25 @@ function resetTimer() {
   remainingTime = initialMinutes * 60;
 }
 
+function enableTooltips() {
+  $('[data-toggle="popover-hover"]').popover({
+    html: true,
+    trigger: 'hover',
+    placement: 'right',
+    content: function () { 
+      const $positionSpan = $("<span>")
+        .addClass("badge bagde-pill badge-warning ml-2")
+        .text(" " + $(this).data('position') + " " + $(this).data('rank'));
+      return '<img class="small-logo" src="' + $(this).data('logo') + '" />' + $positionSpan.prop('outerHTML'); 
+    }
+  });
+  $(".fas.fa-info-circle").show();
+}
 
+function disableTooltips() {
+  $('[data-toggle="popover-hover"]').popover('dispose');
+  $(".fas.fa-info-circle").hide();
+}
 
 const positions = {
   WR: { 
@@ -208,7 +227,9 @@ function initPlayers(teams) {
       "teamName": selectedTeamName,
       "name": selectedPlayer,
       "position": selectedPosition,
-      "depthRank": depthRank
+      "depthRank": depthRank,
+      "imgBgUrl": selectedTeam.imgBgUrl,
+      "imgLogoUrl": selectedTeam.imgLogoUrl
     });
 
     if (teamsToMatch.length < 4) {
@@ -253,15 +274,19 @@ function initPlayers(teams) {
     $playerDiv.attr("data-team", player.teamName);
     $playerDiv.attr("data-rank", player.depthRank);
     $playerDiv.attr("data-position", player.position.id);
+    $playerDiv.attr("data-logo", player.imgLogoUrl);
+    $playerDiv.attr("data-toggle", "popover-hover");
 
     // Create and append name div
     const $nameDiv = $("<div>").addClass("name").text(player.name);
+    $nameDiv.append('<i class="fas fa-info-circle ml-2"></i>');
     $playerDiv.append($nameDiv);
 
     // Append the player div to the playerColumn
     $("#player-column").append($playerDiv);
   });
 
+  disableTooltips();
   initRankColumns();
   initDragContainers();
   resetTimer();
