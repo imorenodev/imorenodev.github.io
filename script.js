@@ -1,12 +1,19 @@
 import { getTeams } from './teams.js';
 
 var playerColumn = document.getElementById("player-column");
-var rankColumns = [
-  document.getElementById("rank-column-1"),
-  document.getElementById("rank-column-2"),
-  document.getElementById("rank-column-3"),
-  document.getElementById("rank-column-4")
-];
+
+var rankColumns = [];
+function initRankColumns() {
+  if (rankColumns.length <= 0) {
+    rankColumns = [
+      document.getElementById("rank-column-1"),
+      document.getElementById("rank-column-2"),
+      document.getElementById("rank-column-3"),
+      document.getElementById("rank-column-4")
+    ];
+  }
+  return rankColumns;
+}
 
 var countdownElement = $("#countdown");
 
@@ -18,7 +25,7 @@ function initDragContainers() {
 
   drake = dragula([
       playerColumn,
-      ...rankColumns,
+      ...rankColumns
     ],   
     {
       invalid: function (el, handle) {
@@ -83,11 +90,11 @@ $("#rank-column-restart").on("click", function() {
 $("#rank-column-submit").click(function() {
   var success = true;
   for (let column in rankColumns) {
-    var team = $(column).attr("data-team");
-    var rank = $(column).attr("data-rank");
+    var team = $(rankColumns[column]).attr("data-team");
+    var rank = $(rankColumns[column]).attr("data-rank");
 
     // Find the matching player in the current rank column
-    var matchingPlayer = $(column).find(".player[data-team='" + team + "'][data-rank='" + rank + "']");
+    var matchingPlayer = $(rankColumns[column]).find(".player[data-team='" + team + "'][data-rank='" + rank + "']");
 
     // Check if a matching player exists in the current rank column
     if (matchingPlayer.length === 0) {
@@ -131,7 +138,6 @@ function updateCountdown() {
   }
 }
 updateCountdown(); // Start the countdown when the page loads
-initDragContainers();
 
 function resetTimer() {
   initDragContainers();
@@ -144,22 +150,27 @@ function resetTimer() {
 
 const positions = {
   WR: { 
+      "id": "WR", 
       "name": "Wide Receivers",
       "depthLevel": 3 
     },
   QB: { 
+      "id": "QB", 
       "name": "QuarterBacks",
       "depthLevel": 2 
     },
   RB: {
+      "id": "RB", 
       "name": "Running Backs",
       "depthLevel": 2
     },
   TE: {
+      "id": "TE", 
       "name": "Tight Ends",
       "depthLevel": 2
     },
   K: { 
+      "id": "K", 
       "name": "Kickers",
       "depthLevel": 2
     }
@@ -174,6 +185,7 @@ function initPlayers(teams) {
   const teamNames = Object.keys(teams);
 
   const players = [];
+  const teamsToMatch = [];
 
   // choose 7 random players 
   for (let i = 0; i < numberOfPLayers; i++) {
@@ -186,13 +198,47 @@ function initPlayers(teams) {
     // select a random player for the team and position
     const selectedPlayerIndex = Math.floor(Math.random() * selectedPosition.depthLevel);
     const selectedPlayer = selectedTeam[selectedPosition.name][selectedPlayerIndex];
+    const depthRank = selectedPlayerIndex + 1;
     players.push({
       "teamName": selectedTeamName,
       "name": selectedPlayer,
       "position": selectedPosition,
-      "depthRank": selectedPlayerIndex
-    })
+      "depthRank": depthRank
+    });
+
+    if (teamsToMatch.length < 4) {
+      teamsToMatch.push({
+        "teamName": selectedTeamName,
+        "name": selectedPlayer,
+        "position": selectedPosition,
+        "depthRank": depthRank,
+        "imgBgUrl": selectedTeam.imgBgUrl,
+        "imgLogoUrl": selectedTeam.imgLogoUrl
+      });
+    }
   }
+
+  teamsToMatch.forEach((teamToMatch, index) => {
+      const $teamDiv = $("<div>")
+          .addClass("container zone-container ranks")
+          .attr("id", "rank-column-" + (index + 1))
+          .attr("data-team", teamToMatch.teamName)
+          .attr("data-rank", teamToMatch.depthRank)
+          .attr("data-position", teamToMatch.position.id)
+          .css("background-image", `url(${teamToMatch.imgBgUrl})`);
+
+      const $imgElem = $("<img>").attr("src", teamToMatch.imgLogoUrl);
+      $teamDiv.append($imgElem);
+
+      const $positionSpan = $("<span>")
+          .addClass("badge bagde-pill badge-warning mb-2")
+          .text(teamToMatch.position.id + " " + teamToMatch.depthRank);
+
+      const $teamContainer = $("<div>");
+      $teamContainer.append($teamDiv, $positionSpan);  // Append both to the container
+
+      $("#rank-column").append($teamContainer);
+  });
 
   players.forEach((player, index) => {
     // Create the player div
@@ -201,11 +247,8 @@ function initPlayers(teams) {
     // Assign dataset attributes
     $playerDiv.attr("data-team", player.teamName);
     $playerDiv.attr("data-rank", player.depthRank);
+    $playerDiv.attr("data-position", player.position.id);
 
-    // Create and append rank div
-    //const $rankDiv = $("<div>").addClass("rank").text(`#${index + 1}`);
-    //$playerDiv.append($rankDiv);
-    
     // Create and append name div
     const $nameDiv = $("<div>").addClass("name").text(player.name);
     $playerDiv.append($nameDiv);
@@ -213,5 +256,7 @@ function initPlayers(teams) {
     // Append the player div to the playerColumn
     $("#player-column").append($playerDiv);
   });
-}
 
+  initRankColumns();
+  initDragContainers();
+}
