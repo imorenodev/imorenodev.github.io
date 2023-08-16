@@ -136,6 +136,7 @@ function updateCountdown() {
     remainingTime--;
     countdownTimer = setTimeout(updateCountdown, 1000); // Update every second
   } else {
+    resetTimer();
     disableDragAndDrop();
     countdownElement.text("Time's up!");
     $('#rank-column-restart').show();
@@ -146,7 +147,6 @@ function updateCountdown() {
 function resetTimer() {
   clearTimeout(countdownTimer);
   remainingTime = initialMinutes * 60;
-  updateCountdown();
 }
 
 
