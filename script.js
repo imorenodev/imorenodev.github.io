@@ -1,7 +1,7 @@
 import { getTeams } from './teams.js';
 
-const successMsg = “Touchdown! You nailed it!”;
-const failMsg = "Incomplete! Try that play again.";
+var successMsg = “Touchdown! You nailed it!”;
+var failMsg = "Incomplete! Try that play again.";
 
 var playerColumn = document.getElementById("player-column");
 
