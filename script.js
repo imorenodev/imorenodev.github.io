@@ -21,8 +21,6 @@ function resetColumns() {
   rankColumns = [];
 }
 
-var countdownElement = $("#countdown");
-
 var drake = null;
 
 function initDragContainers() {
@@ -199,7 +197,7 @@ const positions = {
     }
 };
 let selectedPositions = [positions.WR];
-let numberOfPLayers = 7;
+let NUM_PLAYERS_PER_ROUND = 7;
 
 // Call the function to start fetching and processing the CSV data
 function startRound() {
@@ -214,9 +212,9 @@ function initPlayers(teams) {
   const players = [];
   const teamsToMatch = [];
 
+  let selectedPosition, selectedTeamIndex, selectedTeamName, selectedTeam, selectedPlayerIndex, selectedPlayerName, depthRank;
   // choose 7 random players 
-  for (let i = 0; i < numberOfPLayers; i++) {
-    let selectedPosition, selectedTeamIndex, selectedTeamName, selectedTeam, selectedPlayerIndex, selectedPlayer, depthRank;
+  for (let i = 0; i < NUM_PLAYERS_PER_ROUND; i++) {
 
     do {
       // select a position from the list of possible positions
@@ -229,15 +227,15 @@ function initPlayers(teams) {
 
       // select a random player for the team and position
       selectedPlayerIndex = Math.floor(Math.random() * selectedPosition.depthLevel);
-      selectedPlayer = selectedTeam[selectedPosition.name][selectedPlayerIndex].replace(/\s\((N|R|PUP|SUS)\)$/, "");
+      selectedPlayerName = selectedTeam[selectedPosition.name][selectedPlayerIndex].replace(/\s\((N|R|PUP|SUS)\)$/, "");
       depthRank = selectedPlayerIndex + 1;
-    } while (chosenPlayers[`${selectedTeamIndex}-${selectedPosition.name}-${selectedPlayerIndex}`]); // Check if the combination exists
+    } while (chosenPlayers[`${selectedTeamIndex}-${selectedPosition.id}-${selectedPlayerIndex}`]); // Check if the combination exists
 
     // Add the combination to the cache
-    chosenPlayers[`${selectedTeamIndex}-${selectedPosition.name}-${selectedPlayerIndex}`] = true;
+    chosenPlayers[`${selectedTeamIndex}-${selectedPosition.id}-${selectedPlayerIndex}`] = true;
     players.push({
       "teamName": selectedTeamName,
-      "name": selectedPlayer,
+      "name": selectedPlayerName,
       "position": selectedPosition,
       "depthRank": depthRank,
       "imgBgUrl": selectedTeam.imgBgUrl,
@@ -247,7 +245,7 @@ function initPlayers(teams) {
     if (teamsToMatch.length < 4) {
       teamsToMatch.push({
         "teamName": selectedTeamName,
-        "name": selectedPlayer,
+        "name": selectedPlayerName,
         "position": selectedPosition,
         "depthRank": depthRank,
         "imgBgUrl": selectedTeam.imgBgUrl,
