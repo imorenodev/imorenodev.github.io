@@ -51,47 +51,18 @@
       </nav>
       <!--/.Navbar-->
       <!-- Countdown timer-->
-      <div class="text-center"
-         style="display: flex;justify-content: space-evenly;flex-direction: row;margin-bottom: 1rem;/* max-height: 50px; */">
-         <div class="text-center mt-auto" style="
-                        /* height: auto; */ /* changed to auto for dynamic content height */
-                        width: 75px;
-                        border-radius: 0 0 10px 10px;
-                        /* margin-bottom: 1rem; */
-                        border: 3px rgba(148,89,246, 1);
-                        border-style: none solid solid solid;
-                     ">
-            <div style="
-               font-size: xx-small;
-            ">Score</div> <!-- First row -->
-            <div id="countdown1" class="font-weight-bold">1000</div> <!-- Second row -->
+      <div class="text-center score-board">
+         <div class="text-center mt-auto score-card">
+            <div style="font-size: xx-small;">Score</div>
+            <div id="score" class="font-weight-bold">1000</div>
          </div>
-         <div class="text-center mt-auto" style="
-                  /* height: auto; */
-                  border: rgba(148,89,246, 1);
-                  width: 100px;
-                  border-radius: 0 0 10px 10px;
-                  /* margin-bottom: 1rem; */
-                  background: rgba(148,89,246, 1);
-                  border-style: solid none none none;
-               ">
-            <div style="
-          font-size: xx-small;
-      ">Timer</div>
-            <div id="countdown2" class="font-weight-bold">00:30</div>
+         <div id="countdown-container" class="text-center mt-auto">
+            <div style="font-size: xx-small;">Timer</div>
+            <div id="countdown" class="font-weight-bold">00:30</div>
          </div>
-         <div class="text-center mt-auto" style="
-                  /* height: auto; */
-                  border-radius: 0 0 10px 10px;
-                  /* margin-bottom: 1rem; */
-                  border: 3px rgba(148,89,246, 1);
-                  border-style: none solid solid solid;
-                  width: 75px;
-               ">
-            <div style="
-          font-size: xx-small;
-      ">Round</div>
-            <div id="countdown3" class="font-weight-bold">1/20</div>
+         <div class="text-center mt-auto score-card">
+            <div style="font-size: xx-small;">Round</div>
+            <div id="rounds" class="font-weight-bold">1/20</div>
          </div>
       </div>
       <!-- Game Board -->
