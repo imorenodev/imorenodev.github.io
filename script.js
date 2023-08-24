@@ -267,8 +267,8 @@ function initPlayers(teams) {
       $teamDiv.append($imgElem);
 
       const $positionSpan = $("<span>")
-          .addClass("badge bagde-pill badge-warning mb-2")
-          .text(teamToMatch.position.id + " " + teamToMatch.depthRank);
+          .addClass(`badge badge-pill badge-warning ${index !== 3 ? "mb-2" : ""}`)
+          .text(`${teamToMatch.position.id} ${teamToMatch.depthRank}`);
 
       const $teamContainer = $("<div>");
       $teamContainer.append($teamDiv, $positionSpan);  // Append both to the container

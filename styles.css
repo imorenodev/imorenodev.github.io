@@ -149,7 +149,7 @@ ul {
 }
 
 #player-column {
-  min-height: 470px;
+  min-height: 100%;
 }
 
 .player {
@@ -170,7 +170,7 @@ ul {
 
   /* wrap text to new line */
   word-wrap: break-word;
-  word-break: break-all;
+  word-break: break-word;
   justify-content: center;
   flex: 1;
 
