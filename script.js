@@ -1,5 +1,8 @@
 import { getTeams } from './teams.js';
 
+var successMsg = "Touchdown! You nailed it!";
+var failMsg = "Incomplete! Try that play again.";
+
 var playerColumn = document.getElementById("player-column");
 
 var rankColumns = [];
@@ -109,11 +112,11 @@ $("#rank-column-submit").click(function() {
   if (success) {
     disableDragAndDrop();
     clearTimeout(countdownTimer); // Stop the countdown
-    alert("Success!");
+    alert(successMsg);
     resetColumns();
     startRound();
   } else {
-    alert("WRONG. Try Again.");
+    alert(failMsg);
   }
 });
 
