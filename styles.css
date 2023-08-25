@@ -27,6 +27,7 @@ button {
 
 .navbar {
   background-color: rgba(148,89,246, 1);
+  padding: 0 1rem !important;
 }
 
 h5 {
@@ -196,13 +197,14 @@ div.rank, div.name {
 
 /* score board */
 .score-board {
+  margin-bottom: 1.5rem;
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
-  margin-bottom: 1rem;
 }
 
 .score-card {
+  height: 50px;
   width: 75px;
   border-radius: 0 0 10px 10px;
   border: 3px rgba(148,89,246, 1);
@@ -211,6 +213,7 @@ div.rank, div.name {
 
 #countdown-container {
   border: rgba(148,89,246, 1);
+  height: 50px;
   width: 100px;
   border-radius: 0 0 10px 10px;
   background: rgba(148,89,246, 1);
