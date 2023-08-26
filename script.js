@@ -72,7 +72,7 @@ function disableDragAndDrop() {
 }
 
 function checkIfAllThreeZonesFilled() {
-  $('#rank-column-submit').hide();
+  $('#btn-submit').hide();
 
   for (let column in rankColumns) {
     let player = $(rankColumns[column]).find(".player");
@@ -80,19 +80,19 @@ function checkIfAllThreeZonesFilled() {
       return;
     }
   }
-  $('#rank-column-submit').show();
+  $('#btn-submit').show();
 }
 
 // Add event listener for the reset button
-$("#rank-column-restart").on("click", function() {
+$("#btn-restart").on("click", function() {
   resetColumns();
   chosenPlayers = {};
-  $('#rank-column-restart').hide();
+  $('#btn-restart').hide();
   startRound();
 });
 
 
-$("#rank-column-submit").click(function() {
+$("#btn-submit").click(function() {
   var success = true;
   for (let column in rankColumns) {
     var team = $(rankColumns[column]).attr("data-team");
@@ -141,8 +141,8 @@ function updateCountdown() {
     resetTimer();
     disableDragAndDrop();
     countdownElement.text("Time's up!");
-    $('#rank-column-restart').show();
-    $('#rank-column-submit').hide();
+    $('#btn-restart').show();
+    $('#btn-submit').hide();
     enableTooltips();
   }
 }
@@ -306,4 +306,9 @@ function initPlayers(teams) {
   updateCountdown(); // Start the countdown when the page loads
 }
 
-startRound();
+// Add event listener for the start button
+$("#btn-start").on("click", function() {
+  $("#game-board").show();
+  $("#btn-start").hide();
+  startRound();
+});

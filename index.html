@@ -67,7 +67,7 @@
       </div>
       <!-- Game Board -->
       <div class="container-fluid">
-         <div class="row">
+         <div id="game-board" class="row" style="display: none;">
             <div class="col-7 container players-col mr-0 ml-auto">
                <div id="player-column" class="container zone-container players">
                </div>
@@ -76,12 +76,19 @@
             </div>
          </div>
          <div class="row mt-1">
-            <div id="rank-column-submit" class="col text-center" style="display: none;">
-               <button type="button" class="btn btn-success btn-block">
-               <strong>Let's Go! </strong><i class="fas fa-football-ball ml-1"></i>
+            <div id="btn-start" class="col text-center mt-5">
+               <button type="button" class="btn btn-info btn-block">
+                  <strong>START</strong>
                </button>
             </div>
-            <div id="rank-column-restart" class="col text-center" style="display: none;">
+            <div id="btn-submit" class="col text-center" style="display: none;">
+               <button type="button" class="btn btn-success btn-block">
+                  <i class="fas fa-football-ball mr-1"></i>
+                  <strong> Let's Go! </strong>
+                  <i class="fas fa-football-ball ml-1"></i>
+               </button>
+            </div>
+            <div id="btn-restart" class="col text-center" style="display: none;">
                <button type="button" class="btn btn-warning btn-block">
                   <strong>Restart </strong><i class="fas fa-redo ml-1"></i>
                </button>
