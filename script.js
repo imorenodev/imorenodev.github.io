@@ -319,8 +319,9 @@ $("#btn-submit").click(function() {
     disableDragAndDrop();
     clearTimeout(CountdownTimer); // Stop the countdown
     showCorrectGuess();
-    setScore(100);
-    showPointsGained(100);
+    let totalScore = (RemainingTime + 100) * 1.5;
+    showPointsGained(`Round Bonus + Speed Bonus * Difficulty Bonus = (${100} + ${RemainingTime}) * ${1.5} = ${totalScore} points!`);
+    setScore(totalScore);
     resetColumns();
     RoundNumber++;
     startRound(RoundNumber, Rounds[RoundNumber]);

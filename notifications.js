@@ -19,6 +19,7 @@ const POSITION = {
 };
 
 const TWO_SECONDS = 2000;
+const FOUR_SECONDS = 4000;
 
 const setToastDefaults = () => {
     $.toastDefaults.dismissible = true;
@@ -41,7 +42,7 @@ export function showCorrectGuess() {
     $.snack(TYPES.success, CONTENT.correct, TWO_SECONDS);
 }
 
-export function showPointsGained(points) {
+export function showPointsGained(message) {
     setToastDefaults();
-    $.snack(TYPES.info, `+${points} ${CONTENT.points}`, TWO_SECONDS);
+    $.snack(TYPES.info, message, FOUR_SECONDS);
 }
