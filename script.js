@@ -1,14 +1,11 @@
 import { getTeams } from './teams.js';
 import { POSITIONS } from './positions.js';
-import { showWrongGuess, showPointsLost } from './notifications.js';
+import { showCorrectGuess, showWrongGuess, showPointsLost, showPointsGained } from './notifications.js';
 
 
 let NUM_PLAYERS_PER_ROUND = 7;
 var NUM_ROUNDS = 10;
 var COUNT_DOWN_MINS = 0.5; // Initial minutes for the countdown
-
-var SuccessMsg = "Touchdown! You nailed it!";
-var FailMsg = "Incomplete! Try that play again.";
 
 let SelectedPositions = [POSITIONS.WR];
 let ChosenPlayers = {};
@@ -314,7 +311,8 @@ $("#btn-submit").click(function() {
   if (success) {
     disableDragAndDrop();
     clearTimeout(CountdownTimer); // Stop the countdown
-    alert(SuccessMsg);
+    showCorrectGuess();
+    showPointsGained(100);
     resetColumns();
     RoundNumber++;
     startRound(RoundNumber, Rounds[RoundNumber]);

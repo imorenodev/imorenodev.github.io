@@ -6,8 +6,9 @@ const TYPES = {
 };
 
 const CONTENT = {
-   'wrongGuess': 'Incomplete! Try Again.',
-   'pointsLost': 'points.',
+   'incorrect': 'Incomplete! Try Again.',
+   'correct': 'Incomplete! Try Again.',
+   'points': 'points.',
 };
 
 const POSITION = {
@@ -27,10 +28,20 @@ const setToastDefaults = () => {
 
 export function showWrongGuess() {
     setToastDefaults();
-    $.snack(TYPES.warning, "Incomplete! Try Again.", TWO_SECONDS, POSITION.br, "toast-container-info");
+    $.snack(TYPES.warning, CONTENT.incorrect, TWO_SECONDS);
 }
 
 export function showPointsLost(points) {
     setToastDefaults();
-    $.snack(TYPES.error, `-${points} ${CONTENT.pointsLost}`, TWO_SECONDS, POSITION.tl, "toast-container-score");
+    $.snack(TYPES.error, `-${points} ${CONTENT.points}`, TWO_SECONDS);
+}
+
+export function showCorrectGuess() {
+    setToastDefaults();
+    $.snack(TYPES.success, CONTENT.correct, TWO_SECONDS);
+}
+
+export function showPointsGained(points) {
+    setToastDefaults();
+    $.snack(TYPES.info, `+${points} ${CONTENT.points}`, TWO_SECONDS);
 }
