@@ -1,5 +1,6 @@
 import { getTeams } from './teams.js';
 import { POSITIONS } from './positions.js';
+import { showWrongGuess, showPointsLost } from './notifications.js';
 
 
 let NUM_PLAYERS_PER_ROUND = 7;
@@ -318,6 +319,7 @@ $("#btn-submit").click(function() {
     RoundNumber++;
     startRound(RoundNumber, Rounds[RoundNumber]);
   } else {
-    alert(FailMsg);
+    showWrongGuess();
+    showPointsLost(10);
   }
 });
