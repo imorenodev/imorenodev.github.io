@@ -1,38 +1,38 @@
 import { getTeams } from './teams.js';
 
-var successMsg = "Touchdown! You nailed it!";
-var failMsg = "Incomplete! Try that play again.";
+var SuccessMsg = "Touchdown! You nailed it!";
+var FailMsg = "Incomplete! Try that play again.";
 
-var playerColumn = document.getElementById("player-column");
+var PlayerColumn = document.getElementById("player-column");
 
-var rankColumns = [];
+var RankColumns = [];
 function initRankColumns() {
-  if (rankColumns.length <= 0) {
-    rankColumns = [
+  if (RankColumns.length <= 0) {
+    RankColumns = [
       document.getElementById("rank-column-1"),
       document.getElementById("rank-column-2"),
       document.getElementById("rank-column-3"),
       document.getElementById("rank-column-4")
     ];
   }
-  return rankColumns;
+  return RankColumns;
 }
 
 function resetColumns() {
   $('#player-column').empty();
   $('#rank-column').empty();
-  rankColumns = [];
+  RankColumns = [];
 }
 
-var drake = null;
+var Drake = null;
 
 function initDragContainers() {
 
   disableDragAndDrop();
 
-  drake = dragula([
-      playerColumn,
-      ...rankColumns
+  Drake = dragula([
+      PlayerColumn,
+      ...RankColumns
     ],   
     {
       invalid: function (el, handle) {
@@ -42,7 +42,7 @@ function initDragContainers() {
   );
 
   // Handle drop event
-  drake.on("drop", function(el, target, source, sibling) {
+  Drake.on("drop", function(el, target, source, sibling) {
     // no limit on number of players in player-column
     if (target.id === "player-column") { 
       target.appendChild(el);
@@ -65,17 +65,17 @@ function initDragContainers() {
 }
 
 function disableDragAndDrop() {
-  if (drake) {
-    drake.cancel(true);
-    drake.destroy();
+  if (Drake) {
+    Drake.cancel(true);
+    Drake.destroy();
   }
 }
 
 function checkIfAllThreeZonesFilled() {
   $('#btn-submit').hide();
 
-  for (let column in rankColumns) {
-    let player = $(rankColumns[column]).find(".player");
+  for (let column in RankColumns) {
+    let player = $(RankColumns[column]).find(".player");
     if (player.length <= 0) {
       return;
     }
@@ -86,20 +86,20 @@ function checkIfAllThreeZonesFilled() {
 // Add event listener for the reset button
 $("#btn-restart").on("click", function() {
   resetColumns();
-  chosenPlayers = {};
+  ChosenPlayers = {};
   $('#btn-restart').hide();
-  startRound();
+  startGame();
 });
 
 
 $("#btn-submit").click(function() {
   var success = true;
-  for (let column in rankColumns) {
-    var team = $(rankColumns[column]).attr("data-team");
-    var rank = $(rankColumns[column]).attr("data-rank");
+  for (let column in RankColumns) {
+    var team = $(RankColumns[column]).attr("data-team");
+    var rank = $(RankColumns[column]).attr("data-rank");
 
     // Find the matching player in the current rank column
-    var matchingPlayer = $(rankColumns[column]).find(".player[data-team='" + team + "'][data-rank='" + rank + "']");
+    var matchingPlayer = $(RankColumns[column]).find(".player[data-team='" + team + "'][data-rank='" + rank + "']");
 
     // Check if a matching player exists in the current rank column
     if (matchingPlayer.length === 0) {
@@ -111,36 +111,37 @@ $("#btn-submit").click(function() {
   // Display the appropriate message
   if (success) {
     disableDragAndDrop();
-    clearTimeout(countdownTimer); // Stop the countdown
-    alert(successMsg);
+    clearTimeout(CountdownTimer); // Stop the countdown
+    alert(SuccessMsg);
     resetColumns();
-    startRound();
+    RoundNumber++;
+    startRound(RoundNumber, Rounds[RoundNumber]);
   } else {
-    alert(failMsg);
+    alert(FailMsg);
   }
 });
 
-var countdownElement = $("#countdown");
-var initialMinutes = 0.5; // Initial minutes for the countdown
-var remainingTime = initialMinutes * 60; // Convert minutes to seconds
-var countdownTimer; // Variable to store the timer
+var CountdownElement = $("#countdown");
+var COUNT_DOWN_MINS = 0.5; // Initial minutes for the countdown
+var RemainingTime = COUNT_DOWN_MINS * 60; // Convert minutes to seconds
+var CountdownTimer; // Variable to store the timer
 
 function updateCountdown() {
-  var minutes = Math.floor(remainingTime / 60);
-  var seconds = remainingTime % 60;
+  var minutes = Math.floor(RemainingTime / 60);
+  var seconds = RemainingTime % 60;
 
   // Format the remaining time as "mm:ss"
   var formattedTime = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 
-  countdownElement.text(formattedTime);
+  CountdownElement.text(formattedTime);
 
-  if (remainingTime > 0) {
-    remainingTime--;
-    countdownTimer = setTimeout(updateCountdown, 1000); // Update every second
+  if (RemainingTime > 0) {
+    RemainingTime--;
+    CountdownTimer = setTimeout(updateCountdown, 1000); // Update every second
   } else {
     resetTimer();
     disableDragAndDrop();
-    countdownElement.text("Time's up!");
+    CountdownElement.text("Time's up!");
     $('#btn-restart').show();
     $('#btn-submit').hide();
     enableTooltips();
@@ -148,8 +149,8 @@ function updateCountdown() {
 }
 
 function resetTimer() {
-  clearTimeout(countdownTimer);
-  remainingTime = initialMinutes * 60;
+  clearTimeout(CountdownTimer);
+  RemainingTime = COUNT_DOWN_MINS * 60;
 }
 
 function enableTooltips() {
@@ -172,7 +173,7 @@ function disableTooltips() {
   $(".fas.fa-info-circle").hide();
 }
 
-const positions = {
+const POSITIONS = {
   WR: { 
       "id": "WR", 
       "name": "Wide Receivers",
@@ -199,17 +200,33 @@ const positions = {
       "depthLevel": 2
     }
 };
-let selectedPositions = [positions.WR];
+let SelectedPositions = [POSITIONS.WR];
 let NUM_PLAYERS_PER_ROUND = 7;
+let Rounds = null;
+let RoundNumber = 1;
 
 // Call the function to start fetching and processing the CSV data
-function startRound() {
-  getTeams(initPlayers);
+async function startGame() {
+  const teams = await getTeams();
+  if (teams) {
+      Rounds = initRounds(teams);
+      if (Rounds) {
+        startRound(RoundNumber, Rounds[1]);
+      }
+  }
 }
 
-let chosenPlayers = {};
+let ChosenPlayers = {};
 
-function initPlayers(teams) {
+function initRounds(teams) {
+  var rounds = {}
+  for (var i = 1; i <= NUM_ROUNDS; i++) {
+    rounds[i] = initRound(teams);
+  }
+  return rounds;
+}
+
+function initRound(teams) {
   const teamNames = Object.keys(teams);
 
   const players = [];
@@ -221,7 +238,7 @@ function initPlayers(teams) {
 
     do {
       // select a position from the list of possible positions
-      selectedPosition = selectedPositions[Math.floor(Math.random() * selectedPositions.length)];
+      selectedPosition = SelectedPositions[Math.floor(Math.random() * SelectedPositions.length)];
 
       // select a random team
       selectedTeamIndex = Math.floor(Math.random() * teamNames.length);
@@ -232,10 +249,10 @@ function initPlayers(teams) {
       selectedPlayerIndex = Math.floor(Math.random() * selectedPosition.depthLevel);
       selectedPlayerName = selectedTeam[selectedPosition.name][selectedPlayerIndex].replace(/\s\((N|R|PUP|SUS)\)$/, "");
       depthRank = selectedPlayerIndex + 1;
-    } while (chosenPlayers[`${selectedTeamIndex}-${selectedPosition.id}-${selectedPlayerIndex}`]); // Check if the combination exists
+    } while (ChosenPlayers[`${selectedTeamIndex}-${selectedPosition.id}-${selectedPlayerIndex}`]); // Check if the combination exists
 
     // Add the combination to the cache
-    chosenPlayers[`${selectedTeamIndex}-${selectedPosition.id}-${selectedPlayerIndex}`] = true;
+    ChosenPlayers[`${selectedTeamIndex}-${selectedPosition.id}-${selectedPlayerIndex}`] = true;
     players.push({
       "teamName": selectedTeamName,
       "name": selectedPlayerName,
@@ -256,8 +273,15 @@ function initPlayers(teams) {
       });
     }
   }
+  return { 
+    players: players,
+    teamsToMatch: teamsToMatch
+  }
+}
 
-  teamsToMatch.forEach((teamToMatch, index) => {
+function startRound(roundNumber, round) {
+  $('#rounds').text(`${roundNumber}/${NUM_ROUNDS}`)
+  round.teamsToMatch.forEach((teamToMatch, index) => {
       const $teamDiv = $("<div>")
           .addClass("container zone-container ranks")
           .attr("id", "rank-column-" + (index + 1))
@@ -279,7 +303,7 @@ function initPlayers(teams) {
       $("#rank-column").append($teamContainer);
   });
 
-  players.forEach((player, index) => {
+  round.players.forEach((player, index) => {
     // Create the player div
     const $playerDiv = $("<div>").addClass("player");
     
@@ -306,9 +330,10 @@ function initPlayers(teams) {
   updateCountdown(); // Start the countdown when the page loads
 }
 
+var NUM_ROUNDS = 10;
 // Add event listener for the start button
 $("#btn-start").on("click", function() {
   $("#game-board").show();
   $("#btn-start").hide();
-  startRound();
+  startGame();
 });

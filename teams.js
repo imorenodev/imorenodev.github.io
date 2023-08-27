@@ -7,9 +7,9 @@ import { images } from './assets.js';
 
 // Example usage
 var teams;
-export async function getTeams(callback) {
+export async function getTeams() {
     if (teams) {
-        callback(teams);
+        return teams;
     } else {
         const csvData = await fetchCSVFile();
         if (csvData) {
@@ -17,8 +17,10 @@ export async function getTeams(callback) {
             const parsedCsv = parseCsv(csvData);
             const result = transformToDesiredFormat(parsedCsv);
             console.log(result);
-            callback(result.teams);
+            teams = result.teams; // cache result
+            return teams;
         }
+        return null;
     }
 }
 
