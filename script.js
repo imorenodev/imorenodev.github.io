@@ -155,7 +155,7 @@ async function startGame() {
   if (teams) {
       Rounds = initRounds(teams);
       if (Rounds) {
-        startRound(RoundNumber, Rounds[1]);
+        startRound(1, Rounds[1]);
       }
   }
 }
@@ -221,8 +221,13 @@ function initRound(teams) {
   }
 }
 
-function startRound(roundNumber, round) {
+function setRoundNumber(roundNumber) {
+  RoundNumber = roundNumber;
   $('#rounds').text(`${roundNumber}/${NUM_ROUNDS}`)
+}
+
+function startRound(roundNumber, round) {
+  setRoundNumber(roundNumber);
   round.teamsToMatch.forEach((teamToMatch, index) => {
       const $teamDiv = $("<div>")
           .addClass("container zone-container ranks")
@@ -285,6 +290,8 @@ $("#btn-start").on("click", function() {
 // Add event listener for the reset button
 $("#btn-restart").on("click", function() {
   resetColumns();
+  setRoundNumber(1);
+  setScore(0);
   ChosenPlayers = {};
   $('#btn-restart').hide();
   startGame();
@@ -312,12 +319,23 @@ $("#btn-submit").click(function() {
     disableDragAndDrop();
     clearTimeout(CountdownTimer); // Stop the countdown
     showCorrectGuess();
+    setScore(100);
     showPointsGained(100);
     resetColumns();
     RoundNumber++;
     startRound(RoundNumber, Rounds[RoundNumber]);
   } else {
     showWrongGuess();
+    setScore(-10);
     showPointsLost(10);
   }
 });
+
+function setScore(points) {
+    $('#score').text(function(i, oldVal) {
+        if (points == 0) {
+          return 0;
+        }
+        return parseInt(oldVal) + points;
+    });
+}

@@ -7,7 +7,7 @@ const TYPES = {
 
 const CONTENT = {
    'incorrect': 'Incomplete! Try Again.',
-   'correct': 'Incomplete! Try Again.',
+   'correct': 'TOUCHDOWN!!',
    'points': 'points.',
 };
 
