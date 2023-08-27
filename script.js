@@ -1,11 +1,30 @@
 import { getTeams } from './teams.js';
+import { POSITIONS } from './positions.js';
+
+
+let NUM_PLAYERS_PER_ROUND = 7;
+var NUM_ROUNDS = 10;
+var COUNT_DOWN_MINS = 0.5; // Initial minutes for the countdown
 
 var SuccessMsg = "Touchdown! You nailed it!";
 var FailMsg = "Incomplete! Try that play again.";
 
-var PlayerColumn = document.getElementById("player-column");
-
+let SelectedPositions = [POSITIONS.WR];
+let ChosenPlayers = {};
 var RankColumns = [];
+
+let Rounds = null;
+let RoundNumber = 1;
+
+var PlayerColumn = document.getElementById("player-column");
+var CountdownElement = $("#countdown");
+
+var RemainingTime = COUNT_DOWN_MINS * 60; // Convert minutes to seconds
+var CountdownTimer; // Variable to store the timer
+
+var Drake = null;
+
+
 function initRankColumns() {
   if (RankColumns.length <= 0) {
     RankColumns = [
@@ -23,8 +42,6 @@ function resetColumns() {
   $('#rank-column').empty();
   RankColumns = [];
 }
-
-var Drake = null;
 
 function initDragContainers() {
 
@@ -83,49 +100,6 @@ function checkIfAllThreeZonesFilled() {
   $('#btn-submit').show();
 }
 
-// Add event listener for the reset button
-$("#btn-restart").on("click", function() {
-  resetColumns();
-  ChosenPlayers = {};
-  $('#btn-restart').hide();
-  startGame();
-});
-
-
-$("#btn-submit").click(function() {
-  var success = true;
-  for (let column in RankColumns) {
-    var team = $(RankColumns[column]).attr("data-team");
-    var rank = $(RankColumns[column]).attr("data-rank");
-
-    // Find the matching player in the current rank column
-    var matchingPlayer = $(RankColumns[column]).find(".player[data-team='" + team + "'][data-rank='" + rank + "']");
-
-    // Check if a matching player exists in the current rank column
-    if (matchingPlayer.length === 0) {
-      success = false;
-      break;
-    }
-  }
-
-  // Display the appropriate message
-  if (success) {
-    disableDragAndDrop();
-    clearTimeout(CountdownTimer); // Stop the countdown
-    alert(SuccessMsg);
-    resetColumns();
-    RoundNumber++;
-    startRound(RoundNumber, Rounds[RoundNumber]);
-  } else {
-    alert(FailMsg);
-  }
-});
-
-var CountdownElement = $("#countdown");
-var COUNT_DOWN_MINS = 0.5; // Initial minutes for the countdown
-var RemainingTime = COUNT_DOWN_MINS * 60; // Convert minutes to seconds
-var CountdownTimer; // Variable to store the timer
-
 function updateCountdown() {
   var minutes = Math.floor(RemainingTime / 60);
   var seconds = RemainingTime % 60;
@@ -139,13 +113,17 @@ function updateCountdown() {
     RemainingTime--;
     CountdownTimer = setTimeout(updateCountdown, 1000); // Update every second
   } else {
+    gameOver();
+  }
+}
+
+function gameOver() {
     resetTimer();
     disableDragAndDrop();
     CountdownElement.text("Time's up!");
     $('#btn-restart').show();
     $('#btn-submit').hide();
     enableTooltips();
-  }
 }
 
 function resetTimer() {
@@ -173,38 +151,6 @@ function disableTooltips() {
   $(".fas.fa-info-circle").hide();
 }
 
-const POSITIONS = {
-  WR: { 
-      "id": "WR", 
-      "name": "Wide Receivers",
-      "depthLevel": 3 
-    },
-  QB: { 
-      "id": "QB", 
-      "name": "QuarterBacks",
-      "depthLevel": 2 
-    },
-  RB: {
-      "id": "RB", 
-      "name": "Running Backs",
-      "depthLevel": 2
-    },
-  TE: {
-      "id": "TE", 
-      "name": "Tight Ends",
-      "depthLevel": 2
-    },
-  K: { 
-      "id": "K", 
-      "name": "Kickers",
-      "depthLevel": 2
-    }
-};
-let SelectedPositions = [POSITIONS.WR];
-let NUM_PLAYERS_PER_ROUND = 7;
-let Rounds = null;
-let RoundNumber = 1;
-
 // Call the function to start fetching and processing the CSV data
 async function startGame() {
   const teams = await getTeams();
@@ -215,8 +161,6 @@ async function startGame() {
       }
   }
 }
-
-let ChosenPlayers = {};
 
 function initRounds(teams) {
   var rounds = {}
@@ -330,10 +274,50 @@ function startRound(roundNumber, round) {
   updateCountdown(); // Start the countdown when the page loads
 }
 
-var NUM_ROUNDS = 10;
+
+// Event Listeners
+
 // Add event listener for the start button
 $("#btn-start").on("click", function() {
   $("#game-board").show();
   $("#btn-start").hide();
   startGame();
+});
+
+// Add event listener for the reset button
+$("#btn-restart").on("click", function() {
+  resetColumns();
+  ChosenPlayers = {};
+  $('#btn-restart').hide();
+  startGame();
+});
+
+
+$("#btn-submit").click(function() {
+  var success = true;
+  for (let column in RankColumns) {
+    var team = $(RankColumns[column]).attr("data-team");
+    var rank = $(RankColumns[column]).attr("data-rank");
+
+    // Find the matching player in the current rank column
+    var matchingPlayer = $(RankColumns[column]).find(".player[data-team='" + team + "'][data-rank='" + rank + "']");
+
+    // Check if a matching player exists in the current rank column
+    if (matchingPlayer.length === 0) {
+      success = false;
+      break;
+    }
+  }
+
+  // Display the appropriate message
+  if (success) {
+    disableDragAndDrop();
+    clearTimeout(CountdownTimer); // Stop the countdown
+    alert(SuccessMsg);
+    resetColumns();
+    RoundNumber++;
+    startRound(RoundNumber, Rounds[RoundNumber]);
+  } else {
+    alert(FailMsg);
+  }
 });
