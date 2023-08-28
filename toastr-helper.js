@@ -3,7 +3,7 @@
     if (!a("#toast-container").length) {
       var d = c.position 
         ? c.position
-        : "top-right";
+        : "top-left";
       a("body").prepend(
         '<div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>'
       );
@@ -102,7 +102,7 @@
     l++;
   }
   a.toastDefaults = {
-    position: "top-right",
+    position: "top-left",
     dismissible: !0,
     stackable: !0,
     pauseDelayOnHover: !0,

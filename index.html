@@ -110,6 +110,38 @@
       </div>
       <!-- Game Board -->
       <div class="container-fluid">
+      
+         <!-- Game Settings -->
+         <form class="border border-light p-5">
+            <p class="h4 mb-2 text-center">Game Settings</p>
+            <div class="d-flex flex-wrap flex-column align-content-center">
+               <div class="custom-control custom-switch mb-1">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                  <label class="custom-control-label" for="customSwitch1">Wide Receivers</label>
+               </div>
+               <div class="custom-control custom-switch mb-1">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                  <label class="custom-control-label" for="customSwitch2">Running Backs</label>
+               </div>
+               <div class="custom-control custom-switch mb-1">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                  <label class="custom-control-label" for="customSwitch3">Quarterbacks</label>
+               </div>
+               <div class="custom-control custom-switch mb-1">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch4">
+                  <label class="custom-control-label" for="customSwitch4">Tight Ends</label>
+               </div>
+               <div class="custom-control custom-switch mb-1">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch5">
+                  <label class="custom-control-label" for="customSwitch5">Kickers</label>
+               </div>
+               <div class="font-weight-bold mb-1">
+                  Bonus Multiplier: <span id="bonus-multiplier">150</span>
+               </div>
+            </div>
+            <button class="btn btn-info btn-block my-4" type="submit">START</button>
+         </form>
+      
          <div id="game-board" class="row" style="display: none;">
             <div class="col-7 container players-col mr-0 ml-auto">
                <div id="player-column" class="container zone-container players">

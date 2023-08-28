@@ -7,7 +7,7 @@ let NUM_PLAYERS_PER_ROUND = 7;
 var NUM_ROUNDS = 10;
 var COUNT_DOWN_MINS = 0.5; // Initial minutes for the countdown
 
-let SelectedPositions = [POSITIONS.WR];
+let SelectedPositions = [POSITIONS.WR, POSITIONS.RB];
 let ChosenPlayers = {};
 var RankColumns = [];
 
@@ -319,9 +319,14 @@ $("#btn-submit").click(function() {
     disableDragAndDrop();
     clearTimeout(CountdownTimer); // Stop the countdown
     showCorrectGuess();
+    showPointsGained(`Round Bonus: +${"100"} points!`);
+    showPointsGained(`Speed Bonus: +${RemainingTime} points!`);
+    showPointsGained(`Difficulty Bonus: +${"150%"}`);
+
     let totalScore = (RemainingTime + 100) * 1.5;
-    showPointsGained(`Round Bonus + Speed Bonus * Difficulty Bonus = (${100} + ${RemainingTime}) * ${1.5} = ${totalScore} points!`);
+    showPointsGained(`Total Score: +${totalScore} points!`);
     setScore(totalScore);
+
     resetColumns();
     RoundNumber++;
     startRound(RoundNumber, Rounds[RoundNumber]);

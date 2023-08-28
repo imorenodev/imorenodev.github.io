@@ -29,17 +29,17 @@ const setToastDefaults = () => {
 
 export function showWrongGuess() {
     setToastDefaults();
-    $.snack(TYPES.warning, CONTENT.incorrect, TWO_SECONDS);
+    $.snack(TYPES.warning, CONTENT.incorrect, FOUR_SECONDS);
 }
 
 export function showPointsLost(points) {
     setToastDefaults();
-    $.snack(TYPES.error, `-${points} ${CONTENT.points}`, TWO_SECONDS);
+    $.snack(TYPES.error, `-${points} ${CONTENT.points}`, FOUR_SECONDS);
 }
 
 export function showCorrectGuess() {
     setToastDefaults();
-    $.snack(TYPES.success, CONTENT.correct, TWO_SECONDS);
+    $.snack(TYPES.success, CONTENT.correct, FOUR_SECONDS);
 }
 
 export function showPointsGained(message) {
