@@ -13,6 +13,7 @@ var RankColumns = [];
 
 let Rounds = null;
 let RoundNumber = 1;
+let BonusMultiplier = 100;
 
 var PlayerColumn = document.getElementById("player-column");
 var CountdownElement = $("#countdown");
@@ -280,6 +281,52 @@ function startRound(roundNumber, round) {
 
 // Event Listeners
 
+// Capture the event when any switch is toggled
+$('.custom-control-input').on('change', function() {
+    if ($(this).prop('id') == 'customSwitchAll') {
+        return;
+    }
+
+    if ($(this).prop('checked') == false) {
+      $('#customSwitchAll').prop('checked', false);
+    }
+
+    updateBonusPoints();
+    checkEnableStart();
+});
+
+function checkEnableStart() {
+    // Check if at least one switch is toggled on
+    if ($('.custom-control-input:checked').length > 0) {
+        $('#btn-start').prop('disabled', false);
+    } else {
+        $('#btn-start').prop('disabled', true);
+    }
+}
+
+function updateBonusPoints() {
+    // Update the bonus points multiplier
+    BonusMultiplier = 100;
+    $('.custom-control-input:checked').each(function() {
+        if ($(this).prop('id') == 'customSwitchAll') {
+            return;
+        }
+        BonusMultiplier += 50;
+    });
+    $('#bonus-multiplier').text(BonusMultiplier);
+}
+
+// Toggle all switches when "All" switch is toggled
+$('#customSwitchAll').on('change', function() {
+    var allSwitches = $('.custom-control-input');
+    allSwitches.prop('checked', $(this).prop('checked'));
+    if ($(this).prop('checked') == false) {
+      $('#bonus-multiplier').text(100);
+    }
+    updateBonusPoints();
+    checkEnableStart();
+});
+
 // Add event listener for the start button
 $("#btn-start").on("click", function(e) {
   e.preventDefault();
@@ -325,9 +372,9 @@ $("#btn-submit").click(function(e) {
     showCorrectGuess();
     showPointsGained(`Round Bonus: +${"100"} points!`);
     showPointsGained(`Speed Bonus: +${RemainingTime} points!`);
-    showPointsGained(`Difficulty Bonus: +${"150%"}`);
+    showPointsGained(`Difficulty Bonus: +${BonusMultiplier}%`);
 
-    let totalScore = (RemainingTime + 100) * 1.5;
+    let totalScore = (RemainingTime + 100) * (BonusMultiplier/100);
     showPointsGained(`Total Score: +${totalScore} points!`);
     setScore(totalScore);
 
