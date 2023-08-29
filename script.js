@@ -309,22 +309,30 @@ function updateBonusPoints() {
     BonusMultiplier = 100;
     SelectedPositions = [];
     $('.custom-control-input:checked').each(function() {
-        if ($(this).prop('id') == 'customSwitchAll') {
-            return;
+        switch ($(this).prop('id')) {
+            case 'customSwitchAll':
+                return;
+            case 'wrSwitch':
+                BonusMultiplier += POSITIONS.WR.bonusPoints;
+                SelectedPositions.push(POSITIONS.WR);
+                break;
+            case 'rbSwitch':
+                BonusMultiplier += POSITIONS.RB.bonusPoints;
+                SelectedPositions.push(POSITIONS.RB);
+                break;
+            case 'qbSwitch':
+                BonusMultiplier += POSITIONS.QB.bonusPoints;
+                SelectedPositions.push(POSITIONS.QB);
+                break;
+            case 'teSwitch':
+                BonusMultiplier += POSITIONS.TE.bonusPoints;
+                SelectedPositions.push(POSITIONS.TE);
+                break;
+            case 'kSwitch':
+                BonusMultiplier += POSITIONS.K.bonusPoints;
+                SelectedPositions.push(POSITIONS.K);
+                break;
         }
-        if ($(this).prop('id') == 'wrSwitch') {
-          SelectedPositions.push(POSITIONS.WR);
-        } else if ($(this).prop('id') == 'rbSwitch') {
-          SelectedPositions.push(POSITIONS.RB);
-        } else if ($(this).prop('id') == 'qbSwitch') {
-          SelectedPositions.push(POSITIONS.QB);
-        } else if ($(this).prop('id') == 'teSwitch') {
-          SelectedPositions.push(POSITIONS.TE);
-        } else if ($(this).prop('id') == 'kSwitch') {
-          SelectedPositions.push(POSITIONS.K);
-        }
-
-        BonusMultiplier += 50;
     });
     $('#bonus-multiplier').text(BonusMultiplier);
 }
