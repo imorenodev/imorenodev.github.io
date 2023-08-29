@@ -7,7 +7,7 @@ let NUM_PLAYERS_PER_ROUND = 7;
 var NUM_ROUNDS = 10;
 var COUNT_DOWN_MINS = 0.5; // Initial minutes for the countdown
 
-let SelectedPositions = [POSITIONS.WR, POSITIONS.RB];
+let SelectedPositions = [];
 let ChosenPlayers = {};
 var RankColumns = [];
 
@@ -307,10 +307,23 @@ function checkEnableStart() {
 function updateBonusPoints() {
     // Update the bonus points multiplier
     BonusMultiplier = 100;
+    SelectedPositions = [];
     $('.custom-control-input:checked').each(function() {
         if ($(this).prop('id') == 'customSwitchAll') {
             return;
         }
+        if ($(this).prop('id') == 'wrSwitch') {
+          SelectedPositions.push(POSITIONS.WR);
+        } else if ($(this).prop('id') == 'rbSwitch') {
+          SelectedPositions.push(POSITIONS.RB);
+        } else if ($(this).prop('id') == 'qbSwitch') {
+          SelectedPositions.push(POSITIONS.QB);
+        } else if ($(this).prop('id') == 'teSwitch') {
+          SelectedPositions.push(POSITIONS.TE);
+        } else if ($(this).prop('id') == 'kSwitch') {
+          SelectedPositions.push(POSITIONS.K);
+        }
+
         BonusMultiplier += 50;
     });
     $('#bonus-multiplier').text(BonusMultiplier);
