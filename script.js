@@ -335,6 +335,24 @@ function updateBonusPoints() {
         }
     });
     $('#bonus-multiplier').text(BonusMultiplier);
+
+    // set the Number of Rounds depending on the positions selected.
+    // there are only enough Kickers to make 4 rounds if only Kickers are selected
+    if (SelectedPositions.length < 2) {
+        if (SelectedPositions.includes(POSITIONS.WR)) {
+          NUM_ROUNDS = POSITIONS.WR.maxRounds;
+        } else if (SelectedPositions.includes(POSITIONS.RB)) {
+          NUM_ROUNDS = POSITIONS.RB.maxRounds;
+        } else if (SelectedPositions.includes(POSITIONS.QB)) {
+          NUM_ROUNDS = POSITIONS.QB.maxRounds;
+        } else if (SelectedPositions.includes(POSITIONS.TE)) {
+          NUM_ROUNDS = POSITIONS.TE.maxRounds;
+        } else if (SelectedPositions.includes(POSITIONS.K)) {
+          NUM_ROUNDS = POSITIONS.K.maxRounds;
+        }
+    } else {
+      NUM_ROUNDS = POSITIONS.WR.maxRounds;
+    }
 }
 
 // Toggle all switches when "All" switch is toggled

@@ -205,7 +205,7 @@ div.rank, div.name {
 
 .score-card {
   height: 50px;
-  width: 75px;
+  width: 100px;
   border-radius: 0 0 10px 10px;
   border: 3px rgba(148,89,246, 1);
   border-style: none solid solid solid;
