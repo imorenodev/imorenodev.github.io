@@ -7,7 +7,7 @@ export const POSITIONS = {
   },
   QB: {
     id: "QB",
-    name: "QuarterBacks",
+    name: "Quarterbacks",
     depthLevel: 2,
     bonusPoints: 50
   },
@@ -21,12 +21,12 @@ export const POSITIONS = {
     id: "TE",
     name: "Tight Ends",
     depthLevel: 2,
-    bonusPoints: 75
+    bonusPoints: 100 
   },
   K: {
     id: "K",
     name: "Kickers",
-    depthLevel: 2,
-    bonusPoints: 50
+    depthLevel: 1,
+    bonusPoints: 150
   },
 };
