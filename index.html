@@ -112,7 +112,7 @@
       <div class="container-fluid">
       
          <!-- Game Settings -->
-         <form class="border border-light p-5">
+         <form id="game-settings" class="border border-light p-5">
             <p class="h4 mb-2 text-center">Game Settings</p>
             <div class="d-flex flex-wrap flex-column align-content-center">
                <div class="custom-control custom-switch mb-1">
@@ -139,7 +139,7 @@
                   Bonus Multiplier: <span id="bonus-multiplier">150</span>
                </div>
             </div>
-            <button class="btn btn-info btn-block my-4" type="submit">START</button>
+            <button id="btn-start" class="btn btn-info btn-block my-4">START</button>
          </form>
       
          <div id="game-board" class="row" style="display: none;">
@@ -151,11 +151,6 @@
             </div>
          </div>
          <div class="row mt-1">
-            <div id="btn-start" class="col text-center mt-5">
-               <button type="button" class="btn btn-info btn-block">
-                  <strong>START</strong>
-               </button>
-            </div>
             <div id="btn-submit" class="col text-center" style="display: none;">
                <button type="button" class="btn btn-success btn-block">
                   <i class="fas fa-football-ball mr-2"></i>

@@ -281,14 +281,17 @@ function startRound(roundNumber, round) {
 // Event Listeners
 
 // Add event listener for the start button
-$("#btn-start").on("click", function() {
+$("#btn-start").on("click", function(e) {
+  e.preventDefault();
+  $("#game-settings").hide();
   $("#game-board").show();
   $("#btn-start").hide();
   startGame();
 });
 
 // Add event listener for the reset button
-$("#btn-restart").on("click", function() {
+$("#btn-restart").on("click", function(e) {
+  e.preventDefault();
   resetColumns();
   setRoundNumber(1);
   setScore(0);
@@ -298,7 +301,8 @@ $("#btn-restart").on("click", function() {
 });
 
 
-$("#btn-submit").click(function() {
+$("#btn-submit").click(function(e) {
+  e.preventDefault();
   var success = true;
   for (let column in RankColumns) {
     var team = $(RankColumns[column]).attr("data-team");
