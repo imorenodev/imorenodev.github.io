@@ -422,8 +422,8 @@ $("#btn-submit").click(function(e) {
     startRound(RoundNumber, Rounds[RoundNumber]);
   } else {
     showWrongGuess();
-    setScore(-10);
-    showPointsLost(10);
+    setScore(-25);
+    showPointsLost(25);
   }
 });
 
