@@ -321,11 +321,11 @@ function checkEnableStart() {
 
 function startBonusMultiplierSfx() {
   var colors = new Array(
-    [62, 35, 255],
+    //[62, 35, 255],
     [60, 255, 60],
     [255, 35, 98],
     [45, 175, 230],
-    [255, 0, 255],
+    //[255, 0, 255],
     [255, 128, 0]
   );
 
@@ -383,7 +383,7 @@ function startBonusMultiplierSfx() {
     }
   }
 
-  ColorTimer = setInterval(updateGradient, 0.5);
+  ColorTimer = setInterval(updateGradient, 0.1);
 }
 
 function resetBonusMultiplierStyle() {
