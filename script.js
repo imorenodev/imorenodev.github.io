@@ -14,6 +14,8 @@ var RankColumns = [];
 let Rounds = null;
 let RoundNumber = 1;
 let BonusMultiplier = 100;
+let Streak = 0;
+let ColorTimer = null;
 
 var PlayerColumn = document.getElementById("player-column");
 var CountdownElement = $("#countdown");
@@ -299,9 +301,98 @@ function checkEnableStart() {
     // Check if at least one switch is toggled on
     if ($('.custom-control-input:checked').length > 0) {
         $('#btn-start').prop('disabled', false);
+
+        if (ColorTimer) {
+          return;
+        }
+
+        startBonusMultiplierSfx();
     } else {
         $('#btn-start').prop('disabled', true);
+
+        resetBonusMultiplierStyle();
+
+        if (ColorTimer) {
+          clearInterval(ColorTimer);
+          ColorTimer = null;
+        }
     }
+}
+
+function startBonusMultiplierSfx() {
+  var colors = new Array(
+    [62, 35, 255],
+    [60, 255, 60],
+    [255, 35, 98],
+    [45, 175, 230],
+    [255, 0, 255],
+    [255, 128, 0]
+  );
+
+  var step = 0;
+  //color table indices for: 
+  // current color left
+  // next color left
+  // current color right
+  // next color right
+  var colorIndices = [0, 1, 2, 3];
+
+  //transition speed
+  var gradientSpeed = 0.002;
+
+  function updateGradient() {
+
+    if ($ === undefined) return;
+
+    var c0_0 = colors[colorIndices[0]];
+    var c0_1 = colors[colorIndices[1]];
+    var c1_0 = colors[colorIndices[2]];
+    var c1_1 = colors[colorIndices[3]];
+
+    var istep = 1 - step;
+    var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
+    var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
+    var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
+    var color1 = "rgb(" + r1 + "," + g1 + "," + b1 + ")";
+
+    var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
+    var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
+    var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
+    var color2 = "rgb(" + r2 + "," + g2 + "," + b2 + ")";
+
+    $('#bonus-multiplier-container').css({
+      "background-image": "-webkit-linear-gradient(left, " + color1 + ", " + color2 + ")"
+    }).css({
+      "background-image": "-moz-linear-gradient(left, " + color1 + ", " + color2 + ")"
+    }).css({
+      "color": "transparent",
+      "-webkit-background-clip": "text",
+      "background-clip": "text"
+    });
+
+    step += gradientSpeed;
+    if (step >= 1) {
+      step %= 1;
+      colorIndices[0] = colorIndices[1];
+      colorIndices[2] = colorIndices[3];
+
+      //pick two new target color indices
+      //do not pick the same as the current one
+      colorIndices[1] = (colorIndices[1] + Math.floor(1 + Math.random() * (colors.length - 1))) % colors.length;
+      colorIndices[3] = (colorIndices[3] + Math.floor(1 + Math.random() * (colors.length - 1))) % colors.length;
+    }
+  }
+
+  ColorTimer = setInterval(updateGradient, 0.5);
+}
+
+function resetBonusMultiplierStyle() {
+  $('#bonus-multiplier-container').css({
+    "background-image": "none",
+    "color": "white",
+    "-webkit-background-clip": "border-box",
+    "background-clip": "border-box"
+  });
 }
 
 function updateBonusPoints() {
@@ -409,23 +500,38 @@ $("#btn-submit").click(function(e) {
     disableDragAndDrop();
     clearTimeout(CountdownTimer); // Stop the countdown
     showCorrectGuess();
-    showPointsGained(`Round Bonus: +${"100"} points!`);
-    showPointsGained(`Speed Bonus: +${RemainingTime} points!`);
+    showPointsGained(`Speed Bonus: +${RemainingTime+100} points!`);
+    incrementStreak();
+    showPointsGained(`Streak Bonus: x${Streak} +${Streak*10} points!`);
     showPointsGained(`Difficulty Bonus: +${BonusMultiplier}%`);
 
-    let totalScore = (RemainingTime + 100) * (BonusMultiplier/100);
+    let totalScore = ((RemainingTime + 100) + (Streak*10)) * (BonusMultiplier/100);
     showPointsGained(`Total Score: +${totalScore} points!`);
     setScore(totalScore);
 
     resetColumns();
-    RoundNumber++;
+    setRoundNumber(RoundNumber+1);
     startRound(RoundNumber, Rounds[RoundNumber]);
   } else {
     showWrongGuess();
     setScore(-25);
     showPointsLost(25);
+    resetStreak();
   }
 });
+
+$('#new-game').on('click', function(event) {
+    event.preventDefault();  // Prevents default navigation behavior
+    location.reload();
+});
+
+function incrementStreak() {
+  Streak++;
+}
+
+function resetStreak() {
+  Streak = 0;
+}
 
 function setScore(points) {
     $('#score').text(function(i, oldVal) {

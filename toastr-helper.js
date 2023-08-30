@@ -102,7 +102,7 @@
     l++;
   }
   a.toastDefaults = {
-    position: "top-left",
+    position: "bottom-right",
     dismissible: !0,
     stackable: !0,
     pauseDelayOnHover: !0,
