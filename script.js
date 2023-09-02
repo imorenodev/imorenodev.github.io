@@ -239,6 +239,11 @@ function setRoundNumber(roundNumber) {
 }
 
 function startRound(roundNumber, round) {
+  if (roundNumber < NUM_ROUNDS) {
+    winGame();
+    return;
+  }
+
   setRoundNumber(roundNumber);
   round.teamsToMatch.forEach((teamToMatch, index) => {
       const $teamDiv = $("<div>")
@@ -289,6 +294,10 @@ function startRound(roundNumber, round) {
   updateCountdown(); // Start the countdown when the page loads
 }
 
+function winGame() {
+  $("game-board").hide();
+  $('#game-won-modal').modal('show');
+}
 
 // Event Listeners
 
@@ -450,7 +459,7 @@ $("#btn-submit").click(function(e) {
   }
 });
 
-$('#new-game').on('click', function(event) {
+$('.new-game').on('click', function(event) {
     event.preventDefault();  // Prevents default navigation behavior
     location.reload();
 });
