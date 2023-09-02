@@ -239,7 +239,7 @@ function setRoundNumber(roundNumber) {
 }
 
 function startRound(roundNumber, round) {
-  if (roundNumber < NUM_ROUNDS) {
+  if (roundNumber > NUM_ROUNDS) {
     winGame();
     return;
   }
@@ -462,6 +462,11 @@ $("#btn-submit").click(function(e) {
 $('.new-game').on('click', function(event) {
     event.preventDefault();  // Prevents default navigation behavior
     location.reload();
+});
+
+$('#game-won-modal').on('hidden.bs.modal', function () {
+  // code to execute when the modal is dismissed goes here
+  location.reload();
 });
 
 function initScoreSfx() {
