@@ -300,3 +300,48 @@ div.rank, div.name {
 .custom-control-label {
   font-size: large;
 }
+
+/* rainbow gradient effect */
+.linear-wipe {
+  background: linear-gradient(to right, 
+    #ff8b8b, 
+    orange, 
+    yellow, 
+    #5fff5f, 
+    #34eaff, 
+    #d296ff, 
+    violet
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent; /* This replaces 'text-fill-color' */
+  -webkit-text-fill-color: transparent;
+  animation: shine 0.5s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* timer alert pulse effect */
+@keyframes pulseEffect {
+  0% {
+    transform: scale(1);
+    color: pink;
+  }
+  50% {
+    transform: scale(1.1);
+    color: red;
+  }
+  100% {
+    transform: scale(1);
+    color: white;
+  }
+}
+
+.pulse {
+  animation: pulseEffect 1s infinite;
+}
