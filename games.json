@@ -1,0 +1,18 @@
+{
+  "games": [
+    {
+      "dateTime": "Sun Sep 03 2023 21:24:24 GMT-0400 (Eastern Daylight Time)",
+      "player": "death&taxes",
+      "score": 1337,
+      "streak": 10,
+      "misses": 0
+    },
+    {
+      "dateTime": "Sun Sep 02 2023 21:24:24 GMT-0400 (Eastern Daylight Time)",
+      "player": "death&taxes",
+      "score": 1007,
+      "streak": 8,
+      "misses": 2
+    }
+  ]
+}

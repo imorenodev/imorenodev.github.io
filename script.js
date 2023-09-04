@@ -1,4 +1,5 @@
 import { getTeams } from './teams.js';
+import { addNewGame, getGames } from './games.js';
 import { POSITIONS } from './positions.js';
 import { showCorrectGuess, showWrongGuess, showPointsLost, showPointsGained } from './notifications.js';
 
@@ -14,7 +15,17 @@ var RankColumns = [];
 let Rounds = null;
 let RoundNumber = 1;
 let BonusMultiplier = 100;
-let Streak = 0;
+let CurrentStreak = 0;
+let BestStreak = 0;
+let Misses = 0;
+
+// Track the best streak so far
+// Track the total number of misses
+// Track the position that was missed
+
+// Get the best score ever
+// Get the best streak ever
+// Get the best ever least number of misses
 
 var PlayerColumn = document.getElementById("player-column");
 var CountdownElement = $("#countdown");
@@ -164,6 +175,7 @@ function disableTooltips() {
 // Call the function to start fetching and processing the CSV data
 async function startGame() {
   const teams = await getTeams();
+  await getGames();
   if (teams) {
       Rounds = initRounds(teams);
       if (Rounds) {
@@ -239,8 +251,8 @@ function setRoundNumber(roundNumber) {
 }
 
 function startRound(roundNumber, round) {
-    winGame();
   if (roundNumber > NUM_ROUNDS) {
+    winGame();
     return;
   }
 
@@ -295,6 +307,19 @@ function startRound(roundNumber, round) {
 }
 
 function winGame() {
+  var currentGame = {
+    dateTime: "Sun Sep 03 2023 21:23:24 GMT-0400 (Eastern Daylight Time)",
+    player: "death&taxes",
+    score: getScore(),
+    streak: BestStreak,
+    misses: Misses
+  };
+  addNewGame(currentGame);
+
+  $("current-game-score").text(currentGame.score);
+  $("current-game-streak").text(currentGame.streak);
+  $("current-game-misses").text(currentGame.misses);
+
   $("game-board").hide();
   $('#game-won-modal').modal('show');
 }
@@ -441,10 +466,10 @@ $("#btn-submit").click(function(e) {
     showCorrectGuess();
     showPointsGained(`Speed Bonus: +${RemainingTime+100} points!`);
     incrementStreak();
-    showPointsGained(`Streak Bonus: x${Streak} +${Streak*10} points!`);
+    showPointsGained(`Streak Bonus: x${CurrentStreak} +${CurrentStreak*10} points!`);
     showPointsGained(`Difficulty Bonus: +${BonusMultiplier}%`);
 
-    let totalScore = ((RemainingTime + 100) + (Streak*10)) * (BonusMultiplier/100);
+    let totalScore = ((RemainingTime + 100) + (CurrentStreak*10)) * (BonusMultiplier/100);
     showPointsGained(`Total Score: +${totalScore} points!`);
     setScore(totalScore);
     initScoreSfx();
@@ -478,11 +503,15 @@ function initScoreSfx() {
 }
 
 function incrementStreak() {
-  Streak++;
+  CurrentStreak++;
+  if (BestStreak < CurrentStreak) {
+    BestStreak = CurrentStreak;
+  }
 }
 
 function resetStreak() {
-  Streak = 0;
+  CurrentStreak = 0;
+  Misses++;
 }
 
 function setScore(points) {
@@ -490,6 +519,10 @@ function setScore(points) {
         if (points == 0) {
           return 0;
         }
-        return parseInt(oldVal) + points;
+        return parseFloat(oldVal) + points;
     });
+}
+
+function getScore() {
+    return parseFloat($('#score').text());
 }
