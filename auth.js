@@ -23,7 +23,7 @@ const initAuth = (settings) => {
         }
         });
     } catch (err)  {
-        console.err(err);
+        console.error(err);
         $('#error').text(err.message).show();
     }
 }
@@ -33,24 +33,30 @@ const looseJsonParse = (jsonLikeString) => {
     return Function('"use strict";return (' + jsonLikeString + ')')();
 }
 
+const configure = () => {
+    fetch('firebase-config.json')
+    .then(response => response.json())
+    .then(settings => {
+        localStorage.setItem('settings', JSON.stringify(settings));
+        initAuth(settings);
+    })
+    .catch(error => console.error('Error loading settings:', error));
+};
+
 setView('#no-config');
 try {
-    const settings = JSON.parse(localStorage.getItem('settings'))
+    let settingsFromLS = localStorage.getItem('settings');
+    if (!settingsFromLS) {
+    } else {
+        configure();
+        settingsFromLS = localStorage.getItem('settings');
+    }
+    let settings = JSON.parse(settingsFromLS);
     if (settings && settings.projectId)
         initAuth(settings);
-} catch (err) {
+} catch (error) {
     console.log(err);
 }
-
-const configure = () => {
-fetch('firebase-config.json')
-.then(response => response.json())
-.then(settings => {
-    localStorage.setItem('settings', JSON.stringify(settings));
-    initAuth(settings);
-})
-.catch(error => console.error('Error loading settings:', error));
-};
 
 
 $('#login').click(() => {
