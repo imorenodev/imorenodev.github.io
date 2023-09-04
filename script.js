@@ -239,8 +239,8 @@ function setRoundNumber(roundNumber) {
 }
 
 function startRound(roundNumber, round) {
-  if (roundNumber > NUM_ROUNDS) {
     winGame();
+  if (roundNumber > NUM_ROUNDS) {
     return;
   }
 
