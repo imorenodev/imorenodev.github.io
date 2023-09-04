@@ -47,7 +47,6 @@ setView('#no-config');
 try {
     let settingsFromLS = localStorage.getItem('settings');
     if (!settingsFromLS) {
-    } else {
         configure();
         settingsFromLS = localStorage.getItem('settings');
     }
