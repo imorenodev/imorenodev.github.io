@@ -316,11 +316,11 @@ function winGame() {
   };
   addNewGame(currentGame);
 
-  $("current-game-score").text(currentGame.score);
-  $("current-game-streak").text(currentGame.streak);
-  $("current-game-misses").text(currentGame.misses);
+  $("#current-game-score").text(currentGame.score);
+  $("#current-game-streak").text(currentGame.streak);
+  $("#current-game-misses").text(currentGame.misses);
 
-  $("game-board").hide();
+  $("#game-board").hide();
   $('#game-won-modal').modal('show');
 }
 
@@ -492,19 +492,6 @@ $('.new-game').on('click', function(event) {
 $('#game-won-modal').on('hidden.bs.modal', function () {
   // code to execute when the modal is dismissed goes here
   location.reload();
-});
-
-// Open the logout modal when user clicks the username
-$('#user-name').on('click', function() {
-    $('#logoutModal').modal('show');
-});
-
-// Handle logout button click
-$('#logoutButton').on('click', function() {
-    // Perform logout actions here
-    
-    // For demonstration purposes, we'll just close the modal
-    $('#logoutModal').modal('hide');
 });
 
 function initScoreSfx() {
