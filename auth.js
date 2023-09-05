@@ -1,7 +1,7 @@
 import { initFirebaseAuth, googleLogin, logout } from './firebase-auth.js';
 
 function setView(showView) {
-const views = [ '#signed-in', '#signed-out', '#no-config' ]
+const views = [ '.signed-in', '#signed-out', '#no-config' ]
 views.forEach(view => {
     if (view === showView) {
     $(view).show();
@@ -16,7 +16,7 @@ const initAuth = (settings) => {
         initFirebaseAuth({
         ...settings,
         loggedIn: (user, token) => {
-            setView('#signed-in');
+            setView('.signed-in');
         },
         loggedOut: () => {
             setView('#signed-out');
@@ -69,4 +69,17 @@ $('#configure').click(() => configure());
 $('#clear-settings').click(() => {
     localStorage.clear();
     location.reload();
+});
+
+// Open the logout modal when user clicks the username
+$('#user-name').on('click', function() {
+    $('#logout-modal').modal('show');
+});
+
+// Handle logout button click
+$('#logout-button').on('click', function() {
+    // Perform logout actions here
+    logout();
+    // For demonstration purposes, we'll just close the modal
+    $('#logout-modal').modal('hide');
 });

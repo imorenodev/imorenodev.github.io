@@ -17,6 +17,11 @@ function initFirebaseAuth(config) {
     }
     if (!config.loggedIn) return;
     const token = await user.getIdToken();
+    const userName = user.displayName;
+    if (userName) {
+      $('#user-name').text(userName);
+    }
+    const uid = user.providerData[0].uid;
     config.loggedIn(user, token);
   });
 }

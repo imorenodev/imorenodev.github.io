@@ -494,6 +494,19 @@ $('#game-won-modal').on('hidden.bs.modal', function () {
   location.reload();
 });
 
+// Open the logout modal when user clicks the username
+$('#user-name').on('click', function() {
+    $('#logoutModal').modal('show');
+});
+
+// Handle logout button click
+$('#logoutButton').on('click', function() {
+    // Perform logout actions here
+    
+    // For demonstration purposes, we'll just close the modal
+    $('#logoutModal').modal('hide');
+});
+
 function initScoreSfx() {
   $('#score').addClass('linear-wipe');
   // Set a timeout to remove the class after 5 seconds

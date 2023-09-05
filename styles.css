@@ -345,3 +345,10 @@ div.rank, div.name {
 .pulse {
   animation: pulseEffect 1s infinite;
 }
+
+#signed-out, #user-name-container {
+  font-size: xx-small;
+  border: 1px solid #f8f9fa;
+  border-radius: 10px;
+  padding: 5px 10px;
+}

@@ -72,13 +72,34 @@
        <div class="navbar-item ml-auto mr-1" id="signed-out">
          <span id="login">Login</span>
        </div>
+       <div id="user-name-container" class="navbar-item signed-in ml-auto mr-1" style="display:none;">
+         <span id="user-name" data-toggle="modal" data-target="#logout-modal">username</span>
+       </div>
+
+      <!-- Logout Modal -->
+      <div class="modal fade top" id="logout-modal" tabindex="-1" role="dialog" aria-labelledby="logout-modal-label"
+      aria-hidden="true">
+
+      <!-- Add class .modal-frame and then add class .modal-bottom (or other classes from list above) to set a position to the modal -->
+      <div class="modal-dialog modal-frame modal-top" role="document">
+         <div class="modal-content">
+            <div class="modal-body">
+            <div class="row d-flex justify-content-center align-items-center">
+               <h5 class="pt-3 pr-2 text-danger text-muted">Are you sure you want to logout?</h5>
+               <button id="logout-button" type="button" class="btn btn-danger">Logout</button>
+               <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            </div>
+            </div>
+         </div>
+      </div>
+      </div>
 
       <!-- Collapse button -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent15"
-         aria-controls="navbarSupportedContent15" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content"
+         aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
       <!-- Collapsible content -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent15">
+      <div class="collapse navbar-collapse" id="navbar-content">
 
          <!-- Links -->
          <ul class="navbar-nav mr-auto">
@@ -89,7 +110,7 @@
                <a id="depth-chart-link" target="_blank" class="nav-link" href="https://tools.thehuddle.com/nfl-depth-charts">TheHuddle.com - Depth Charts</a>
             </li>
             <li class="nav-item">
-               <div id="signed-in">
+               <div class="signed-in">
                   <a class="nav-link" id="logout" href="#">Logout</a>
                </div>
             </li>
