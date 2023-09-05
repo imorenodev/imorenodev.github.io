@@ -61,11 +61,15 @@ try {
 $('#login').click(() => {
     googleLogin();
 });
-$('#logout').click(() => {
+
+$('#logout-button').click(() => {
     logout();
-    $('#navbarSupportedContent15').collapse('hide');
+    $('#navbar-content').collapse('hide');
+    $('#logout-modal').modal('hide');
 });
+
 $('#configure').click(() => configure());
+
 $('#clear-settings').click(() => {
     localStorage.clear();
     location.reload();
@@ -74,12 +78,4 @@ $('#clear-settings').click(() => {
 // Open the logout modal when user clicks the username
 $('#user-name').on('click', function() {
     $('#logout-modal').modal('show');
-});
-
-// Handle logout button click
-$('#logout-button').on('click', function() {
-    // Perform logout actions here
-    logout();
-    // For demonstration purposes, we'll just close the modal
-    $('#logout-modal').modal('hide');
 });
