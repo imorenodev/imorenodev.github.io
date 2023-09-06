@@ -20,14 +20,6 @@ let CurrentStreak = 0;
 let BestStreak = 0;
 let Misses = 0;
 
-// Track the best streak so far
-// Track the total number of misses
-// Track the position that was missed
-
-// Get the best score ever
-// Get the best streak ever
-// Get the best ever least number of misses
-
 var PlayerColumn = document.getElementById("player-column");
 var CountdownElement = $("#countdown");
 
@@ -252,8 +244,7 @@ function setRoundNumber(roundNumber) {
 }
 
 function startRound(roundNumber, round) {
-  //if (roundNumber > NUM_ROUNDS) {
-  if (roundNumber > 7) {
+  if (roundNumber > NUM_ROUNDS) {
     winGame();
     return;
   }
