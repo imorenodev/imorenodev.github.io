@@ -298,12 +298,24 @@ function startRound(roundNumber, round) {
     // Append the player div to the playerColumn
     $("#player-column").append($playerDiv);
   });
+  randomizeChildElems($("#player-column"));
 
   disableTooltips();
   initRankColumns();
   initDragContainers();
   resetTimer();
   updateCountdown(); // Start the countdown when the page loads
+}
+
+function randomizeChildElems(container) {
+  var children = container.children().get();
+  $.each(children, function(index, item) {
+    var randomIndex = Math.floor(Math.random() * (index + 1));
+    var temp = children[index];
+    children[index] = children[randomIndex];
+    children[randomIndex] = temp;
+  });
+  container.empty().append(children);
 }
 
 function winGame() {
