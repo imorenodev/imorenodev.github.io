@@ -2,6 +2,7 @@ import { getTeams } from './teams.js';
 import { addNewGame, getGames } from './games.js';
 import { POSITIONS } from './positions.js';
 import { showCorrectGuess, showWrongGuess, showPointsLost, showPointsGained } from './notifications.js';
+import { Games, saveUserGames } from './firebase-auth.js';
 
 
 let NUM_PLAYERS_PER_ROUND = 7;
@@ -251,7 +252,8 @@ function setRoundNumber(roundNumber) {
 }
 
 function startRound(roundNumber, round) {
-  if (roundNumber > NUM_ROUNDS) {
+  //if (roundNumber > NUM_ROUNDS) {
+  if (roundNumber > 7) {
     winGame();
     return;
   }
@@ -326,14 +328,58 @@ function winGame() {
     streak: BestStreak,
     misses: Misses
   };
-  addNewGame(currentGame);
+  Games.push(currentGame);
 
   $("#current-game-score").text(currentGame.score);
   $("#current-game-streak").text(currentGame.streak);
   $("#current-game-misses").text(currentGame.misses);
 
+  saveUserGames(Games)
+  let highScores = findHighScores(Games);
+
+  $("#best-game-score").text(highScores.highestScore);
+  $("#best-game-streak").text(highScores.highestStreak);
+  $("#best-game-misses").text(highScores.lowestMisses);
+
   $("#game-board").hide();
   $('#game-won-modal').modal('show');
+}
+
+function findHighScores(Games) {
+  if (Games.length === 0) {
+    // Handle the case where there are no games
+    return {
+      highestScore: null,
+      highestStreak: null,
+      lowestMisses: null,
+    };
+  }
+
+  return Games.reduce(
+    (stats, game) => {
+      // Check for the highest score
+      if (game.score > stats.highestScore) {
+        stats.highestScore = game.score;
+      }
+
+      // Check for the highest streak
+      if (game.streak > stats.highestStreak) {
+        stats.highestStreak = game.streak;
+      }
+
+      // Check for the lowest misses
+      if (game.misses < stats.lowestMisses) {
+        stats.lowestMisses = game.misses;
+      }
+
+      return stats;
+    },
+    {
+      highestScore: Games[0].score,
+      highestStreak: Games[0].streak,
+      lowestMisses: Games[0].misses,
+    }
+  );
 }
 
 // Event Listeners

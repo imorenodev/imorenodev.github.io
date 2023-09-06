@@ -1,3 +1,5 @@
+let Games = [];
+
 function initFirebaseAuth(config) {
   if (!config.projectId) throw Error('Missing projectId');
   if (!config.apiKey) throw Error('Missing apiKey');
@@ -21,7 +23,8 @@ function initFirebaseAuth(config) {
     if (userName) {
       $('#user-name').text(userName);
     }
-    const uid = user.providerData[0].uid;
+
+    readUserData();
     config.loggedIn(user, token);
   });
 }
@@ -42,11 +45,60 @@ function handleAuthError(error, onError) {
 
 function googleLogin(onError) {
   var provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).then(() => {}, (error) => handleAuthError(error, onError));
+  firebase.auth().signInWithPopup(provider)
+  .then((result) => {
+  /** @type {firebase.auth.OAuthCredential} */
+  var credential = result.credential;
+
+  // This gives you a Google Access Token. You can use it to access the Google API.
+  var token = credential.accessToken;
+  // The signed-in user info.
+  var user = result.user;
+  // IdP data available in result.additionalUserInfo.profile.
+    // ...
+  }).then(() => {}, (error) => handleAuthError(error, onError));
+}
+
+function readUserData() {
+  firebase.database().ref('players/' + firebase.auth().currentUser.uid).once('value').then(function(snapshot) {
+    try {
+      let player = snapshot.val().metadata;
+      console.log('Player retrieved:', player);
+    } catch(error) {
+      saveUserMetadata({
+          email: firebase.auth().currentUser.email,
+          username: firebase.auth().currentUser.displayName
+      });
+      return;
+    }
+    Games = snapshot.val().games;
+    console.log('Games retrieved:', Games);
+  }).catch(function(error) {
+    console.error('Error retrieving games:', error);
+  });
+}
+
+function saveUserMetadata(metadata) {
+  firebase.database().ref('players/' + firebase.auth().currentUser.uid + '/metadata').set(
+    metadata
+  ).catch(function(error) {
+    console.error('Error saving games:', error);
+  });
+}
+
+function saveUserGames(games) {
+  firebase.database().ref('players/' + firebase.auth().currentUser.uid + '/games').set(
+    games
+  ).catch(function(error) {
+    console.error('Error saving games:', error);
+  });
 }
 
 export {
   initFirebaseAuth,
   googleLogin,
-  logout
+  logout,
+  readUserData,
+  saveUserGames,
+  Games
 }
