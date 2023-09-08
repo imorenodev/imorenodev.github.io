@@ -71,7 +71,9 @@ function readUserData() {
       });
       return;
     }
-    Games = snapshot.val().games;
+    if (snapshot.val().games) {
+      Games = snapshot.val().games;
+    }
     console.log('Games retrieved:', Games);
   }).catch(function(error) {
     console.error('Error retrieving games:', error);
