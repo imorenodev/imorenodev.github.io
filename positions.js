@@ -9,9 +9,9 @@ export const POSITIONS = {
   QB: {
     id: "QB",
     name: "Quarterbacks",
-    depthLevel: 2,
+    depthLevel: 1,
     bonusPoints: 50,
-    maxRounds: 9
+    maxRounds: 4
   },
   RB: {
     id: "RB",
@@ -23,9 +23,9 @@ export const POSITIONS = {
   TE: {
     id: "TE",
     name: "Tight Ends",
-    depthLevel: 2,
+    depthLevel: 1,
     bonusPoints: 100,
-    maxRounds: 9
+    maxRounds: 4
   },
   K: {
     id: "K",

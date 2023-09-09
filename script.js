@@ -244,7 +244,8 @@ function setRoundNumber(roundNumber) {
 }
 
 function startRound(roundNumber, round) {
-  if (roundNumber > NUM_ROUNDS) {
+  //if (roundNumber > NUM_ROUNDS) {
+  if (roundNumber > 1) {
     winGame();
     return;
   }
@@ -340,9 +341,9 @@ function findHighScores(Games) {
   if (Games.length === 0) {
     // Handle the case where there are no games
     return {
-      highestScore: null,
-      highestStreak: null,
-      lowestMisses: null,
+      highestScore: 0,
+      highestStreak: 0,
+      lowestMisses: 0,
     };
   }
 
@@ -351,18 +352,9 @@ function findHighScores(Games) {
       // Check for the highest score
       if (game.score > stats.highestScore) {
         stats.highestScore = game.score;
-      }
-
-      // Check for the highest streak
-      if (game.streak > stats.highestStreak) {
         stats.highestStreak = game.streak;
-      }
-
-      // Check for the lowest misses
-      if (game.misses < stats.lowestMisses) {
         stats.lowestMisses = game.misses;
       }
-
       return stats;
     },
     {
@@ -442,7 +434,25 @@ function updateBonusPoints() {
 
     // set the Number of Rounds depending on the positions selected.
     // there are only enough Kickers to make 4 rounds if only Kickers are selected
-    if (SelectedPositions.length < 2) {
+    switch (SelectedPositions.length) {
+      case 5:
+        NUM_ROUNDS = 15;
+        break;
+      case 4:
+        NUM_ROUNDS = 12;
+        break;
+      case 3:
+        NUM_ROUNDS = 10;
+        break;
+      case 2:
+        if (SelectedPositions.includes(POSITIONS.WR) || SelectedPositions.includes(POSITIONS.RB)) {
+          NUM_ROUNDS = 10;
+        } else {
+          NUM_ROUNDS = 8;
+        }
+        break;
+      case 1:
+      default:
         if (SelectedPositions.includes(POSITIONS.WR)) {
           NUM_ROUNDS = POSITIONS.WR.maxRounds;
         } else if (SelectedPositions.includes(POSITIONS.RB)) {
@@ -454,8 +464,7 @@ function updateBonusPoints() {
         } else if (SelectedPositions.includes(POSITIONS.K)) {
           NUM_ROUNDS = POSITIONS.K.maxRounds;
         }
-    } else {
-      NUM_ROUNDS = POSITIONS.WR.maxRounds;
+        break;
     }
 }
 

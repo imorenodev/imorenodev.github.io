@@ -81,19 +81,33 @@ function readUserData() {
 }
 
 function saveUserMetadata(metadata) {
-  firebase.database().ref('players/' + firebase.auth().currentUser.uid + '/metadata').set(
-    metadata
-  ).catch(function(error) {
-    console.error('Error saving games:', error);
-  });
+  if (!firebase.auth().currentUser) {
+    return;
+  }
+  try {
+    firebase.database().ref('players/' + firebase.auth().currentUser.uid + '/metadata').set(
+      metadata
+    ).catch(function(error) {
+      console.error('Error saving games:', error);
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 function saveUserGames(games) {
-  firebase.database().ref('players/' + firebase.auth().currentUser.uid + '/games').set(
-    games
-  ).catch(function(error) {
-    console.error('Error saving games:', error);
-  });
+  if (!firebase.auth().currentUser) {
+    return;
+  }
+  try {
+    firebase.database().ref('players/' + firebase.auth().currentUser.uid + '/games').set(
+      games
+    ).catch(function(error) {
+      console.error('Error saving games:', error);
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export {
