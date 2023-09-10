@@ -521,6 +521,7 @@ $("#btn-submit").click(function(e) {
     disableDragAndDrop();
     clearTimeout(CountdownTimer); // Stop the countdown
     showCorrectGuess();
+    $('#btn-submit').hide();
     showPointsGained(`Speed Bonus: +${RemainingTime+100} points!`);
     incrementStreak();
     showPointsGained(`Streak Bonus: x${CurrentStreak} +${CurrentStreak*10} points!`);
